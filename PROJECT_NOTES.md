@@ -15,22 +15,22 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 ## 2. Pages
 
-| Page | Sections |
-|---|---|
-| `index.astro` | Hero, About, Projects, Career, Education, Skills, Resume, GitHub/LinkedIn links, Contact |
+| Page          | Sections                                                                                                   |
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
+| `index.astro` | Hero, About, Projects, Career, Education, Skills, Resume, GitHub/LinkedIn links, Contact                   |
 | `music.astro` | Production journey timeline, featured track, Spotify + Apple Music embeds, profile links, audio visualizer |
-| 404 | Designed 404 page |
+| 404           | Designed 404 page                                                                                          |
 
 ## 3. Interactive features (one home each)
 
-| Feature | Location |
-|---|---|
-| Playable pad/keyboard | Hero (main page) |
-| Skills as a mixing board | Skills section |
-| Career timeline as DAW tracks | Career and Education |
-| Audio visualizer | Music page, tied to featured track |
-| Cursor-reactive background | Site-wide, subtle |
-| Hidden terminal | Easter egg (shortcut or `>_` icon) |
+| Feature                       | Location                           |
+| ----------------------------- | ---------------------------------- |
+| Playable pad/keyboard         | Hero (main page)                   |
+| Skills as a mixing board      | Skills section                     |
+| Career timeline as DAW tracks | Career and Education               |
+| Audio visualizer              | Music page, tied to featured track |
+| Cursor-reactive background    | Site-wide, subtle                  |
+| Hidden terminal               | Easter egg (shortcut or `>_` icon) |
 
 ## 4. Tech stack
 
@@ -59,6 +59,7 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 - Real imagery only on the live site (no placeholders).
 
 **Five rules:**
+
 1. Content first, effects second; everything important works without JS or the toys.
 2. Normal behavior stays normal (predictable nav, natural scroll).
 3. No required discovery: resume, links, contact never hide behind a feature.
@@ -87,23 +88,24 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 Do in order; don't start the next until "Done when" is met.
 
-| # | Phase | Branch | Status |
-|---|---|---|---|
-| 0 | Setup and Git Foundations | `main`, `chore/setup` | **Next up** |
-| 1 | Design Spec and Visual Foundation | `feature/design-system` | Not started |
-| 2 | Layout Shell and Navigation | `feature/layout-shell` | Not started |
-| 3 | Core Content (static) | one per section | Not started |
-| 4 | Motion Layer | `feature/motion` | Not started |
-| 5 | Skills Mixing Board | `feature/skills-mixer` | Not started |
-| 6 | Career/Education DAW Timeline | `feature/career-timeline` | Not started |
-| 7 | Hero Pad / Keyboard | `feature/hero-pad` | Not started |
-| 8 | Music Page | `feature/music-page`, `-embeds`, `-visualizer` | Not started |
-| 9 | Cursor-Reactive Background | `feature/background` | Not started |
-| 10 | Hidden Terminal | `feature/terminal` | Not started |
-| 11 | Polish, Performance, Accessibility | `chore/polish` | Not started |
-| 12 | Launch and Maintenance | `chore/launch` | Not started |
+| #   | Phase                              | Branch                                         | Status      |
+| --- | ---------------------------------- | ---------------------------------------------- | ----------- |
+| 0   | Setup and Git Foundations          | `main`, `chore/setup`                          | **Next up** |
+| 1   | Design Spec and Visual Foundation  | `feature/design-system`                        | Not started |
+| 2   | Layout Shell and Navigation        | `feature/layout-shell`                         | Not started |
+| 3   | Core Content (static)              | one per section                                | Not started |
+| 4   | Motion Layer                       | `feature/motion`                               | Not started |
+| 5   | Skills Mixing Board                | `feature/skills-mixer`                         | Not started |
+| 6   | Career/Education DAW Timeline      | `feature/career-timeline`                      | Not started |
+| 7   | Hero Pad / Keyboard                | `feature/hero-pad`                             | Not started |
+| 8   | Music Page                         | `feature/music-page`, `-embeds`, `-visualizer` | Not started |
+| 9   | Cursor-Reactive Background         | `feature/background`                           | Not started |
+| 10  | Hidden Terminal                    | `feature/terminal`                             | Not started |
+| 11  | Polish, Performance, Accessibility | `chore/polish`                                 | Not started |
+| 12  | Launch and Maintenance             | `chore/launch`                                 | Not started |
 
 ### Phase 0 checklist (current)
+
 - [ ] Install Node.js, Git, VS Code (with Astro extension)
 - [ ] Create GitHub repo; configure git name and email
 - [ ] Scaffold Astro project; first commit; push
@@ -116,16 +118,16 @@ Do in order; don't start the next until "Done when" is met.
 
 ## 9. Inputs still needed from me
 
-| Item | Needed by |
-|---|---|
-| Accent color(s), artist name/brand, reference sites | Phase 1 |
-| Headshot and studio photos | Phase 3 |
-| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design) | Phase 3 |
-| Career and education details, resume PDF | Phase 3 |
-| Skills list with honest proficiency levels | Phase 5 |
-| Logic Pro sample exports for the pad (8-16, compressed) | Phase 7 |
-| Music story, milestones, album art, Spotify + Apple Music links | Phase 8 |
-| Featured track audio (self-hosted, rights cleared) | Phase 8 |
+| Item                                                                                           | Needed by |
+| ---------------------------------------------------------------------------------------------- | --------- |
+| Accent color(s), artist name/brand, reference sites                                            | Phase 1   |
+| Headshot and studio photos                                                                     | Phase 3   |
+| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design) | Phase 3   |
+| Career and education details, resume PDF                                                       | Phase 3   |
+| Skills list with honest proficiency levels                                                     | Phase 5   |
+| Logic Pro sample exports for the pad (8-16, compressed)                                        | Phase 7   |
+| Music story, milestones, album art, Spotify + Apple Music links                                | Phase 8   |
+| Featured track audio (self-hosted, rights cleared)                                             | Phase 8   |
 
 ## 10. Pitfalls to avoid
 
@@ -143,8 +145,8 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 
 ## 12. Decisions log
 
-| Date | Decision |
-|---|---|
+| Date       | Decision                                                                         |
+| ---------- | -------------------------------------------------------------------------------- |
 | 2026-10-27 | Plan finalized in `PLAN.md`; starting at Phase 0. Context captured in this file. |
 
 _Update the status table and decisions log as each phase completes._

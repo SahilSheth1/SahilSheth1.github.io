@@ -1,43 +1,43 @@
-# Astro Starter Kit: Minimal
+# Sahil Sheth: Portfolio
 
-```sh
-npm create astro@latest -- --template minimal
+A fast, dark, "studio meets software" portfolio covering software and design (AI/ML focus) plus a music production page. It is also a learning project for git and GitHub.
+
+**Live site:** https://SahilSheth1.github.io
+
+> Status: in development. See [PLAN.md](PLAN.md) for the full roadmap and [PROJECT_NOTES.md](PROJECT_NOTES.md) for context and progress.
+
+## Pages
+
+- **Main page:** hero, about, projects, career, education, skills, resume, contact
+- **Music page:** production journey, featured track, streaming embeds, audio visualizer
+
+## Tech stack
+
+- [Astro](https://astro.build) (static output)
+- Plain CSS with design tokens
+- Lenis + GSAP for scroll and animation
+- Web Audio API and Canvas 2D for the pad and visualizer
+- GitHub Pages + GitHub Actions for hosting and deploys
+
+## Run locally
+
+Requires Node.js 22 or newer.
+
+```bash
+git clone https://github.com/SahilSheth1/SahilSheth1.github.io.git
+cd SahilSheth1.github.io
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Then open the URL printed in the terminal.
 
-## 🚀 Project Structure
+| Command           | What it does                         |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start the local dev server           |
+| `npm run build`   | Build the production site to `dist/` |
+| `npm run preview` | Preview the production build locally |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Workflow
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`main` is always deployable. Work happens on `feature/*`, `fix/*` and `chore/*` branches and merges through pull requests. Pushing to `main` redeploys the site.

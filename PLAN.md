@@ -14,41 +14,41 @@ A premium, interactive portfolio site covering software and design (AI/ML focus)
 
 ### Pages and sections
 
-| Page | Sections |
-|---|---|
-| `index.astro` (main) | Intro (hero), About, Projects, Career, Education, Skills, Resume, GitHub and LinkedIn links, Contact |
-| `music.astro` | Production journey timeline, featured track, Spotify and Apple Music embeds, profile links, audio visualizer |
+| Page                 | Sections                                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `index.astro` (main) | Intro (hero), About, Projects, Career, Education, Skills, Resume, GitHub and LinkedIn links, Contact         |
+| `music.astro`        | Production journey timeline, featured track, Spotify and Apple Music embeds, profile links, audio visualizer |
 
 ### Interactive features (one home each)
 
-| Feature | Location |
-|---|---|
-| Playable pad/keyboard | Hero, main page |
-| Skills as a mixing board | Skills section |
-| Career timeline as DAW tracks | Career and Education section |
-| Audio visualizer | Music page, tied to featured track |
-| Cursor-reactive background | Site-wide, subtle |
-| Hidden terminal | Easter egg (keyboard shortcut or `>_` icon) |
+| Feature                       | Location                                    |
+| ----------------------------- | ------------------------------------------- |
+| Playable pad/keyboard         | Hero, main page                             |
+| Skills as a mixing board      | Skills section                              |
+| Career timeline as DAW tracks | Career and Education section                |
+| Audio visualizer              | Music page, tied to featured track          |
+| Cursor-reactive background    | Site-wide, subtle                           |
+| Hidden terminal               | Easter egg (keyboard shortcut or `>_` icon) |
 
 ---
 
 ## 2. Tech Stack
 
-| Layer | Choice |
-|---|---|
-| Framework | Astro (static output) |
-| Language | JavaScript (TypeScript optional later) |
-| Styling | Plain CSS with variables (design tokens) |
-| Scroll and animation | Lenis (smooth scroll) + GSAP (ScrollTrigger, timelines) |
-| Pad and sounds | Web Audio API, samples exported from Logic Pro |
-| Visualizer | Web Audio `AnalyserNode` + Canvas 2D |
-| Background | Canvas 2D (WebGL only if needed later) |
-| Mixer, timeline, terminal | Vanilla JS with pointer events |
-| Fonts | Fontsource (self-hosted) |
-| Icons | Lucide or Phosphor (pick one) |
-| Music embeds | Spotify and Apple Music iframes, lazy-loaded |
-| Hosting and CI | GitHub Pages + GitHub Actions |
-| Tooling | Git, GitHub, Figma, VS Code, Prettier, ESLint, Lighthouse |
+| Layer                     | Choice                                                    |
+| ------------------------- | --------------------------------------------------------- |
+| Framework                 | Astro (static output)                                     |
+| Language                  | JavaScript (TypeScript optional later)                    |
+| Styling                   | Plain CSS with variables (design tokens)                  |
+| Scroll and animation      | Lenis (smooth scroll) + GSAP (ScrollTrigger, timelines)   |
+| Pad and sounds            | Web Audio API, samples exported from Logic Pro            |
+| Visualizer                | Web Audio `AnalyserNode` + Canvas 2D                      |
+| Background                | Canvas 2D (WebGL only if needed later)                    |
+| Mixer, timeline, terminal | Vanilla JS with pointer events                            |
+| Fonts                     | Fontsource (self-hosted)                                  |
+| Icons                     | Lucide or Phosphor (pick one)                             |
+| Music embeds              | Spotify and Apple Music iframes, lazy-loaded              |
+| Hosting and CI            | GitHub Pages + GitHub Actions                             |
+| Tooling                   | Git, GitHub, Figma, VS Code, Prettier, ESLint, Lighthouse |
 
 **Fallback:** If Astro feels like too much at the start, use plain HTML/CSS/JS with the same libraries and migrate later.
 
@@ -77,15 +77,15 @@ A premium, interactive portfolio site covering software and design (AI/ML focus)
 
 ## 4. Quality Standards (checked before every merge)
 
-| Standard | Target |
-|---|---|
-| Performance | Lighthouse 90+; Largest Contentful Paint under 2.5s |
-| Accessibility | Lighthouse 90+; keyboard navigable; contrast passes; alt text; semantic HTML |
-| Responsive | Tested at 375px, 768px, 1280px, 1920px and on a real phone |
-| Smoothness | 60fps while scrolling and animating |
-| Touch targets | 44px minimum |
-| Reduced motion | Animations calm down; site still fully usable |
-| Sound | Nothing autoplays; mute control present; volumes balanced |
+| Standard       | Target                                                                       |
+| -------------- | ---------------------------------------------------------------------------- |
+| Performance    | Lighthouse 90+; Largest Contentful Paint under 2.5s                          |
+| Accessibility  | Lighthouse 90+; keyboard navigable; contrast passes; alt text; semantic HTML |
+| Responsive     | Tested at 375px, 768px, 1280px, 1920px and on a real phone                   |
+| Smoothness     | 60fps while scrolling and animating                                          |
+| Touch targets  | 44px minimum                                                                 |
+| Reduced motion | Animations calm down; site still fully usable                                |
+| Sound          | Nothing autoplays; mute control present; volumes balanced                    |
 
 ---
 
@@ -104,6 +104,7 @@ A premium, interactive portfolio site covering software and design (AI/ML focus)
 Each phase ends with something working and merged. Do them in order, and don't start the next until the current "Done when" list is met.
 
 ### Phase 0: Setup and Git Foundations
+
 **Branch:** `main` (initial commit), then `chore/setup`
 **Git skills:** `init`, `add`, `commit`, remote, `push`, `.gitignore`, README
 
@@ -118,6 +119,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** A blank Astro site is live at `yourusername.github.io` (or the repo URL), and pushing to `main` redeploys it.
 
 ### Phase 1: Design Spec and Visual Foundation
+
 **Branch:** `feature/design-system`
 **Git skills:** branching, pull requests, merging
 
@@ -131,6 +133,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** A style guide page (or section) shows every token, text style, and button state, and it looks right on desktop and mobile.
 
 ### Phase 2: Layout Shell and Navigation
+
 **Branch:** `feature/layout-shell`
 
 - [ ] Create `Layout.astro` with shared head, meta tags, favicon, Open Graph image
@@ -144,6 +147,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** Both pages exist, nav works on all screen sizes, and moving between pages feels smooth.
 
 ### Phase 3: Core Content (Static, No Effects Yet)
+
 **Branches:** one per section (`feature/hero`, `feature/about`, `feature/projects`, `feature/career-education`, `feature/skills-static`, `feature/resume-contact`)
 
 - [ ] Hero: name, one-line value statement, resume button, social links
@@ -158,6 +162,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** The full main page reads clearly and completely with zero animation. Content is final-quality, with no placeholder text or images.
 
 ### Phase 4: Motion Layer
+
 **Branch:** `feature/motion`
 
 - [ ] Add Lenis smooth scrolling, tuned so it feels natural
@@ -169,6 +174,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** Scrolling feels smooth at 60fps, every section has an entrance, and reduced-motion users get a calm version.
 
 ### Phase 5: Skills Mixing Board
+
 **Branch:** `feature/skills-mixer`
 
 - [ ] Design the channel-strip UI (fader, level meter, label, LED) in Figma first
@@ -180,6 +186,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** Faders drag smoothly on desktop and phone, are keyboard accessible, and the skills remain readable if the mixer fails to load.
 
 ### Phase 6: Career and Education DAW Timeline
+
 **Branch:** `feature/career-timeline`
 
 - [ ] Design the track-lane layout: each role or school is a clip on a timeline
@@ -191,6 +198,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** The timeline is smooth, readable, and every detail is reachable by keyboard and on mobile.
 
 ### Phase 7: Hero Pad / Keyboard
+
 **Branch:** `feature/hero-pad`
 
 - [ ] Export 8-16 short, well-mixed samples from Logic Pro (kicks, snares, hats, chords, vocal chops)
@@ -203,6 +211,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** Pads trigger instantly on click, tap, and keyboard, nothing plays without user action, and the hero still communicates my intro clearly.
 
 ### Phase 8: Music Page
+
 **Branches:** `feature/music-page`, `feature/music-embeds`, `feature/visualizer`
 
 - [ ] Write the production journey: when I started, Logic Pro, genres (hip-hop, R&B, pop), milestones
@@ -216,6 +225,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** The page feels atmospheric but matches the main site's style, embeds load without slowing the page, and the visualizer runs smoothly.
 
 ### Phase 9: Cursor-Reactive Background
+
 **Branch:** `feature/background`
 
 - [ ] Build a lightweight canvas animation (particles or shapes) that reacts to the cursor
@@ -226,6 +236,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** The background adds depth without hurting readability or frame rate.
 
 ### Phase 10: Hidden Terminal
+
 **Branch:** `feature/terminal`
 
 - [ ] Build a terminal overlay opened by a shortcut (e.g. `` ` `` or `Ctrl+K`) and a small `>_` icon
@@ -237,6 +248,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** It's fun, polished, accessible via keyboard, and never the only route to anything.
 
 ### Phase 11: Polish, Performance, and Accessibility Pass
+
 **Branch:** `chore/polish`
 
 - [ ] Run Lighthouse on both pages; fix anything under 90
@@ -251,6 +263,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 **Done when:** Every quality standard in section 4 passes.
 
 ### Phase 12: Launch and Maintenance
+
 **Branch:** `chore/launch`
 
 - [ ] Final review of the README (screenshots, tech stack, how to run locally)
@@ -276,16 +289,16 @@ Each phase ends with something working and merged. Do them in order, and don't s
 
 ## 8. Inputs I Need to Gather
 
-| Item | Needed by |
-|---|---|
-| Accent color(s), artist name or brand, reference sites | Phase 1 |
-| Headshot and studio photos | Phase 3 |
-| Project details, screenshots, repo and live links | Phase 3 |
-| Career and education details, resume PDF | Phase 3 |
-| Skills list with honest proficiency levels | Phase 5 |
-| Logic Pro sample exports for the pad | Phase 7 |
-| Music story, milestones, album art, Spotify and Apple Music links | Phase 8 |
-| Featured track audio file for the visualizer (self-hosted, with rights to use it) | Phase 8 |
+| Item                                                                              | Needed by |
+| --------------------------------------------------------------------------------- | --------- |
+| Accent color(s), artist name or brand, reference sites                            | Phase 1   |
+| Headshot and studio photos                                                        | Phase 3   |
+| Project details, screenshots, repo and live links                                 | Phase 3   |
+| Career and education details, resume PDF                                          | Phase 3   |
+| Skills list with honest proficiency levels                                        | Phase 5   |
+| Logic Pro sample exports for the pad                                              | Phase 7   |
+| Music story, milestones, album art, Spotify and Apple Music links                 | Phase 8   |
+| Featured track audio file for the visualizer (self-hosted, with rights to use it) | Phase 8   |
 
 ---
 
@@ -303,18 +316,18 @@ Each phase ends with something working and merged. Do them in order, and don't s
 
 ## 10. Progress Tracker
 
-| Phase | Status |
-|---|---|
-| 0. Setup and Git Foundations | Not started |
-| 1. Design Spec and Visual Foundation | Not started |
-| 2. Layout Shell and Navigation | Not started |
-| 3. Core Content | Not started |
-| 4. Motion Layer | Not started |
-| 5. Skills Mixing Board | Not started |
-| 6. Career and Education DAW Timeline | Not started |
-| 7. Hero Pad / Keyboard | Not started |
-| 8. Music Page | Not started |
-| 9. Cursor-Reactive Background | Not started |
-| 10. Hidden Terminal | Not started |
+| Phase                                  | Status      |
+| -------------------------------------- | ----------- |
+| 0. Setup and Git Foundations           | Not started |
+| 1. Design Spec and Visual Foundation   | Not started |
+| 2. Layout Shell and Navigation         | Not started |
+| 3. Core Content                        | Not started |
+| 4. Motion Layer                        | Not started |
+| 5. Skills Mixing Board                 | Not started |
+| 6. Career and Education DAW Timeline   | Not started |
+| 7. Hero Pad / Keyboard                 | Not started |
+| 8. Music Page                          | Not started |
+| 9. Cursor-Reactive Background          | Not started |
+| 10. Hidden Terminal                    | Not started |
 | 11. Polish, Performance, Accessibility | Not started |
-| 12. Launch and Maintenance | Not started |
+| 12. Launch and Maintenance             | Not started |
