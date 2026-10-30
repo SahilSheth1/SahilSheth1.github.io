@@ -1,0 +1,263 @@
+---
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/tokens.css";
+import "../styles/base.css";
+
+const colors = [
+  { name: "--bg", value: "#0A0A0B", use: "Page background" },
+  { name: "--surface-1", value: "#121214", use: "Cards, sections" },
+  { name: "--surface-2", value: "#19191C", use: "Raised, inputs" },
+  { name: "--surface-3", value: "#212125", use: "Hover, popovers" },
+  { name: "--text", value: "#EDEAE4", use: "Headings, primary" },
+  { name: "--text-muted", value: "64%", use: "Body copy" },
+  { name: "--text-subtle", value: "52%", use: "Captions only" },
+  { name: "--accent", value: "#FF9F1C", use: "Primary action" },
+  { name: "--accent-hover", value: "#FFB247", use: "Accent hover" },
+  { name: "--accent-press", value: "#E88D0C", use: "Accent pressed" },
+  { name: "--secondary", value: "#3DDBC4", use: "Sparingly" },
+  { name: "--danger", value: "#FF5C5C", use: "Errors only" },
+];
+
+const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const radii = ["sm", "md", "lg", "pill"];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Style guide | Sahil Sheth</title>
+  </head>
+  <body>
+    <main class="container section guide">
+      <header class="block">
+        <p class="mono-label">Style guide / Signal Amber</p>
+        <h1 class="display">Studio meets software.</h1>
+        <p>
+          Every token, text style, and button state used on the site. If
+          something looks wrong here, it will look wrong everywhere.
+        </p>
+      </header>
+
+      <section class="block">
+        <h2>Color</h2>
+        <div class="swatches">
+          {colors.map((c) => (
+            <div class="swatch">
+              <div class="chip" style={`background: var(${c.name});`} />
+              <code>{c.name}</code>
+              <span class="small">{c.value}</span>
+              <span class="small subtle">{c.use}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Typography</h2>
+        <div class="stack">
+          <div>
+            <span class="mono-label">Display / Space Grotesk 600</span>
+            <p class="display">Sahil Sheth</p>
+          </div>
+          <div>
+            <span class="mono-label">H1</span>
+            <h1>Software, design, music</h1>
+          </div>
+          <div>
+            <span class="mono-label">H2</span>
+            <h2>Selected projects</h2>
+          </div>
+          <div>
+            <span class="mono-label">H3</span>
+            <h3>Career timeline</h3>
+          </div>
+          <div>
+            <span class="mono-label">Body / Inter 17px</span>
+            <p>
+              I build machine learning tools and the interfaces around them, and
+              I produce hip-hop, R&amp;B, and pop in Logic Pro. Body copy stays
+              calm, around 68 characters per line, with generous line height so
+              it reads easily.
+            </p>
+          </div>
+          <div>
+            <span class="mono-label">Small</span>
+            <p class="small">Smaller supporting text for notes and captions.</p>
+          </div>
+          <div>
+            <span class="mono-label">Mono label / JetBrains Mono</span>
+            <p class="mono-label">2024.06 / 120 BPM / A minor</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Buttons and links</h2>
+        <div class="row">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-primary" disabled>
+            Disabled
+          </button>
+        </div>
+        <p class="small subtle">
+          Tab through them to see the focus ring. Hover to see lift and glow.
+          Press to see the squish.
+        </p>
+        <p>
+          Inline link: <a href="#top">the underline grows in from the left</a>.
+        </p>
+      </section>
+
+      <section class="block">
+        <h2>Cards and tags</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Project card</h3>
+            <p class="small">
+              Surface 1, 1px border, 16px radius, lifts 2px on hover.
+            </p>
+            <div class="row tags">
+              <span class="tag">Python</span>
+              <span class="tag">PyTorch</span>
+              <span class="tag">Astro</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Another card</h3>
+            <p class="small">
+              Borders brighten on hover instead of using heavy shadows.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Spacing</h2>
+        <div class="stack-sm">
+          {spaces.map((n) => (
+            <div class="space-row">
+              <code>--space-{n}</code>
+              <div class="bar" style={`width: var(--space-${n});`} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Radii</h2>
+        <div class="row">
+          {radii.map((r) => (
+            <div
+              class="radius-demo"
+              style={`border-radius: var(--radius-${r});`}
+            >
+              <code>{r}</code>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Shadows and glow</h2>
+        <div class="row">
+          <div class="elev" style="box-shadow: var(--shadow-sm);">
+            <code>sm</code>
+          </div>
+          <div class="elev" style="box-shadow: var(--shadow-md);">
+            <code>md</code>
+          </div>
+          <div class="elev" style="box-shadow: var(--shadow-lg);">
+            <code>lg</code>
+          </div>
+          <div class="elev" style="box-shadow: var(--glow-accent);">
+            <code>glow</code>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  .guide {
+    display: grid;
+    gap: var(--space-9);
+  }
+  .block {
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+  .stack {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .stack-sm {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+  }
+  .subtle {
+    color: var(--text-subtle);
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-4);
+  }
+  .swatch {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .chip {
+    height: 4.5rem;
+    margin-bottom: var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-5);
+  }
+  .tags {
+    margin-top: var(--space-4);
+    gap: var(--space-2);
+  }
+  .space-row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .bar {
+    height: 0.75rem;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .radius-demo,
+  .elev {
+    display: grid;
+    place-items: center;
+    width: 6.5rem;
+    height: 5rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .elev {
+    border-radius: var(--radius-md);
+  }
+</style>
