@@ -318,8 +318,8 @@ Each phase ends with something working and merged. Do them in order, and don't s
 
 | Phase                                  | Status      |
 | -------------------------------------- | ----------- |
-| 0. Setup and Git Foundations           | Not started |
-| 1. Design Spec and Visual Foundation   | Not started |
+| 0. Setup and Git Foundations           | Done        |
+| 1. Design Spec and Visual Foundation   | Done        |
 | 2. Layout Shell and Navigation         | Not started |
 | 3. Core Content                        | Not started |
 | 4. Motion Layer                        | Not started |
