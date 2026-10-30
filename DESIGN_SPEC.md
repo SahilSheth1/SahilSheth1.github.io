@@ -94,7 +94,7 @@ Borders are always 1px, low-opacity white. Layer depth with surfaces, not heavy 
 - **Cards:** `--surface-1`, 1px border, 16px radius, lift 2px on hover.
 - **Grain:** very subtle noise overlay at about 4% opacity.
 
-## 8. Reference sites (to fill in)
+## 8. Reference sites (skipped for now; fill in anytime)
 
 | Site | What I like (font, spacing, hover, motion) |
 | ---- | ------------------------------------------ |
@@ -104,6 +104,7 @@ Borders are always 1px, low-opacity white. Layer depth with surfaces, not heavy 
 
 ## 9. Open decisions
 
-- Icon set: Lucide (confirm package name when first icon is needed).
+- Icon set: Lucide (install in Phase 2 when the nav needs its first icon; confirm the Astro-friendly package then).
+- Figma mockup: skipped. This spec and the `/styleguide` page are the visual reference.
 - Favicon and Open Graph image: design in Figma during Phase 2.
 - Logo or wordmark: plain "Sahil Sheth" in Space Grotesk until decided otherwise.

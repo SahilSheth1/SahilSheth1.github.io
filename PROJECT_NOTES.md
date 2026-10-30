@@ -88,46 +88,57 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 Do in order; don't start the next until "Done when" is met.
 
-| #   | Phase                              | Branch                                         | Status      |
-| --- | ---------------------------------- | ---------------------------------------------- | ----------- |
-| 0   | Setup and Git Foundations          | `main`, `chore/setup`                          | **Next up** |
-| 1   | Design Spec and Visual Foundation  | `feature/design-system`                        | Not started |
-| 2   | Layout Shell and Navigation        | `feature/layout-shell`                         | Not started |
-| 3   | Core Content (static)              | one per section                                | Not started |
-| 4   | Motion Layer                       | `feature/motion`                               | Not started |
-| 5   | Skills Mixing Board                | `feature/skills-mixer`                         | Not started |
-| 6   | Career/Education DAW Timeline      | `feature/career-timeline`                      | Not started |
-| 7   | Hero Pad / Keyboard                | `feature/hero-pad`                             | Not started |
-| 8   | Music Page                         | `feature/music-page`, `-embeds`, `-visualizer` | Not started |
-| 9   | Cursor-Reactive Background         | `feature/background`                           | Not started |
-| 10  | Hidden Terminal                    | `feature/terminal`                             | Not started |
-| 11  | Polish, Performance, Accessibility | `chore/polish`                                 | Not started |
-| 12  | Launch and Maintenance             | `chore/launch`                                 | Not started |
+| #   | Phase                              | Branch                                         | Status                |
+| --- | ---------------------------------- | ---------------------------------------------- | --------------------- |
+| 0   | Setup and Git Foundations          | `main`, `chore/setup`                          | **Done** (2026-10-28) |
+| 1   | Design Spec and Visual Foundation  | `feature/design-system`                        | **Done** (2026-10-29) |
+| 2   | Layout Shell and Navigation        | `feature/layout-shell`                         | **Next up**           |
+| 3   | Core Content (static)              | one per section                                | Not started           |
+| 4   | Motion Layer                       | `feature/motion`                               | Not started           |
+| 5   | Skills Mixing Board                | `feature/skills-mixer`                         | Not started           |
+| 6   | Career/Education DAW Timeline      | `feature/career-timeline`                      | Not started           |
+| 7   | Hero Pad / Keyboard                | `feature/hero-pad`                             | Not started           |
+| 8   | Music Page                         | `feature/music-page`, `-embeds`, `-visualizer` | Not started           |
+| 9   | Cursor-Reactive Background         | `feature/background`                           | Not started           |
+| 10  | Hidden Terminal                    | `feature/terminal`                             | Not started           |
+| 11  | Polish, Performance, Accessibility | `chore/polish`                                 | Not started           |
+| 12  | Launch and Maintenance             | `chore/launch`                                 | Not started           |
 
-### Phase 0 checklist (current)
+### Phase 0 checklist (complete)
 
-- [ ] Install Node.js, Git, VS Code (with Astro extension)
-- [ ] Create GitHub repo; configure git name and email
-- [ ] Scaffold Astro project; first commit; push
-- [ ] Add `.gitignore` and basic `README.md`
-- [ ] Add `PLAN.md` (and these notes) to the repo
-- [ ] Set up Prettier and ESLint
-- [ ] GitHub Actions workflow to build and deploy to GitHub Pages
+- [x] Install Node.js, Git, VS Code (with Astro extension)
+- [x] Create GitHub repo; configure git name and email
+- [x] Scaffold Astro project; first commit; push
+- [x] Add `.gitignore` and basic `README.md`
+- [x] Add `PLAN.md` (and these notes) to the repo
+- [x] Set up Prettier and ESLint
+- [x] GitHub Actions workflow to build and deploy to GitHub Pages
+
+Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`.
 
 **Done when:** a blank Astro site is live at `yourusername.github.io` (or repo URL) and pushing to `main` redeploys it.
 
+### Phase 1 summary (complete)
+
+- [x] Design spec: `DESIGN_SPEC.md` (Signal Amber)
+- [x] `src/styles/tokens.css` and `src/styles/base.css`
+- [x] Self-hosted fonts: Space Grotesk, Inter, JetBrains Mono (`@fontsource-variable/*`)
+- [x] Style guide page at `/styleguide`
+- [ ] Icon set: deferred to Phase 2 (install when the mobile menu button needs its first icon)
+- Skipped by choice: Figma mockup, reference sites
+
 ## 9. Inputs still needed from me
 
-| Item                                                                                           | Needed by |
-| ---------------------------------------------------------------------------------------------- | --------- |
-| Accent color(s), artist name/brand, reference sites                                            | Phase 1   |
-| Headshot and studio photos                                                                     | Phase 3   |
-| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design) | Phase 3   |
-| Career and education details, resume PDF                                                       | Phase 3   |
-| Skills list with honest proficiency levels                                                     | Phase 5   |
-| Logic Pro sample exports for the pad (8-16, compressed)                                        | Phase 7   |
-| Music story, milestones, album art, Spotify + Apple Music links                                | Phase 8   |
-| Featured track audio (self-hosted, rights cleared)                                             | Phase 8   |
+| Item                                                                                                          | Needed by |
+| ------------------------------------------------------------------------------------------------------------- | --------- |
+| ~~Accent color(s), artist name/brand~~ (done: Signal Amber, "Sahil Sheth"); reference sites (skipped for now) | Phase 1   |
+| Headshot and studio photos                                                                                    | Phase 3   |
+| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design)                | Phase 3   |
+| Career and education details, resume PDF                                                                      | Phase 3   |
+| Skills list with honest proficiency levels                                                                    | Phase 5   |
+| Logic Pro sample exports for the pad (8-16, compressed)                                                       | Phase 7   |
+| Music story, milestones, album art, Spotify + Apple Music links                                               | Phase 8   |
+| Featured track audio (self-hosted, rights cleared)                                                            | Phase 8   |
 
 ## 10. Pitfalls to avoid
 
@@ -145,8 +156,10 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 
 ## 12. Decisions log
 
-| Date       | Decision                                                                         |
-| ---------- | -------------------------------------------------------------------------------- |
-| 2026-10-27 | Plan finalized in `PLAN.md`; starting at Phase 0. Context captured in this file. |
+| Date       | Decision                                                                                                                                                                                                                                                                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-27 | Plan finalized in `PLAN.md`; starting at Phase 0. Context captured in this file.                                                                                                                                                                                                                                                                                      |
+| 2026-10-28 | Repo named `SahilSheth1.github.io` (site served at root, no base path). Node 24, npm 11, Git 2.49. ESLint pinned to v9 (`@eslint/js@9` must match; v10 conflicts with current plugins). Prettier + `prettier-plugin-astro`. Deploy via `withastro/action@v3` + `actions/deploy-pages@v4`. Phase 0 complete.                                                           |
+| 2026-10-29 | Palette: Signal Amber (amber `#FF9F1C` accent, teal `#3DDBC4` secondary, near-black `#0A0A0B`). Artist name: Sahil Sheth. Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (mono). Figma mockup and reference sites skipped; the style guide page and `DESIGN_SPEC.md` are the visual reference. Icon set (Lucide) deferred to Phase 2. Phase 1 complete. |
 
 _Update the status table and decisions log as each phase completes._
