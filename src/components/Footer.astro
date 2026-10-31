@@ -1,0 +1,59 @@
+---
+import { site } from "../data/site.js";
+
+const year = new Date().getFullYear();
+const { github, linkedin } = site.links;
+
+const links = [
+  github && { label: "GitHub", href: github },
+  linkedin && { label: "LinkedIn", href: linkedin },
+].filter(Boolean);
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <p class="mono-label">
+      © {year} {site.name}
+    </p>
+    <nav aria-label="Social links">
+      <ul>
+        {links.map((l) => (
+          <li>
+            <a href={l.href} rel="noopener noreferrer">
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-6);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+</style>
