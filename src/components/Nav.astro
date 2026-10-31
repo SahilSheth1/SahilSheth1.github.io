@@ -1,0 +1,383 @@
+---
+import { site } from "../data/site.js";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<header class="nav" data-nav data-open="false" data-scrolled="false">
+  <div class="container bar">
+    <a class="brand" href="/" aria-label={`${site.name}, home`}>
+      {site.name}
+    </a>
+
+    <button
+      class="toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      aria-label="Open menu"
+      data-nav-toggle
+    >
+      <span class="lines" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <nav id="site-menu" class="links" aria-label="Primary">
+      {site.nav.map((item) => (
+        <a
+          href={item.href}
+          data-section={item.section}
+          aria-current={item.page && item.page === path ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  let controller;
+
+  function setup() {
+    controller?.abort();
+    controller = new AbortController();
+    const { signal } = controller;
+
+    const header = document.querySelector("[data-nav]");
+    const toggle = header?.querySelector("[data-nav-toggle]");
+    if (!header || !toggle) return;
+
+    const links = [...header.querySelectorAll(".links a")];
+    const sectionLinks = links.filter((a) => a.dataset.section);
+
+    // Mobile menu
+    const setOpen = (open) => {
+      header.dataset.open = String(open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+
+    toggle.addEventListener(
+      "click",
+      () => setOpen(header.dataset.open !== "true"),
+      { signal },
+    );
+    links.forEach((a) =>
+      a.addEventListener("click", () => setOpen(false), { signal }),
+    );
+
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape" && header.dataset.open === "true") {
+          setOpen(false);
+          toggle.focus();
+        }
+      },
+      { signal },
+    );
+
+    window
+      .matchMedia("(min-width: 48rem)")
+      .addEventListener("change", () => setOpen(false), {
+        signal,
+      });
+
+    // Active section highlighting (home page only)
+    const sections = sectionLinks
+      .map((a) => document.getElementById(a.dataset.section))
+      .filter(Boolean);
+
+    const setActive = (id) => {
+      sectionLinks.forEach((a) => {
+        if (id && a.dataset.section === id)
+          a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      });
+    };
+
+    // A clicked (or hash-linked) section stays highlighted until the person
+    // scrolls or presses a key. Needed because a section near the bottom of
+    // the page can't always reach the top of the screen.
+    const hashId = window.location.hash.slice(1);
+    let pinned = sections.some((s) => s.id === hashId) ? hashId : null;
+    let ticking = false;
+
+    // Runs on scroll: border on the nav, plus which section is current.
+    // Current = the last section whose top has passed just under the nav.
+    const update = () => {
+      ticking = false;
+      header.dataset.scrolled = String(window.scrollY > 8);
+      if (!sections.length) return;
+      if (pinned) {
+        setActive(pinned);
+        return;
+      }
+
+      const line = header.offsetHeight + 24;
+      let current = null;
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= line) current = s.id;
+      }
+
+      // Bottom of the page: the last section may be too short to reach the line
+      const atBottom =
+        window.scrollY > 0 &&
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 2;
+      if (atBottom) current = sections[sections.length - 1].id;
+
+      setActive(current);
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true, signal },
+    );
+
+    // Clicking a section link highlights it right away and ignores the
+    // in-between sections the smooth scroll passes through.
+    sectionLinks.forEach((a) =>
+      a.addEventListener(
+        "click",
+        () => {
+          pinned = a.dataset.section;
+          setActive(pinned);
+        },
+        { signal },
+      ),
+    );
+
+    // Any manual scrolling hands control back to the scroll position
+    ["wheel", "touchmove", "keydown", "pointerdown"].forEach((type) =>
+      window.addEventListener(
+        type,
+        () => {
+          pinned = null;
+        },
+        { passive: true, signal },
+      ),
+    );
+
+    update();
+  }
+
+  document.addEventListener("astro:page-load", setup);
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: rgba(10, 10, 11, 0.78);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+
+  .nav[data-scrolled="true"],
+  .nav[data-open="true"] {
+    border-bottom-color: var(--border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--nav-height);
+  }
+
+  /* Brand */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: var(--tap-target);
+    background-image: none;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .brand:hover {
+    color: var(--text);
+  }
+
+  .brand::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: var(--glow-accent);
+  }
+
+  /* Menu button (mobile) */
+  .toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .toggle:hover {
+    border-color: var(--border-strong);
+  }
+
+  .lines {
+    position: relative;
+    width: 18px;
+    height: 14px;
+  }
+
+  .lines span {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .lines span:nth-child(1) {
+    transform: translateY(-6px);
+  }
+
+  .lines span:nth-child(3) {
+    transform: translateY(6px);
+  }
+
+  .nav[data-open="true"] .lines span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .nav[data-open="true"] .lines span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav[data-open="true"] .lines span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  /* Links: dropdown panel on mobile */
+  .links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2) var(--gutter) var(--space-5);
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-base) var(--ease-out),
+      visibility 0s linear var(--dur-base);
+  }
+
+  .nav[data-open="true"] .links {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-base) var(--ease-out),
+      visibility 0s;
+  }
+
+  .links a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    padding-inline: var(--space-2);
+    border-bottom: 1px solid var(--border);
+    background-image: none;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .links a:hover,
+  .links a[aria-current] {
+    color: var(--text);
+  }
+
+  .links a::after {
+    content: "";
+    position: absolute;
+    left: var(--space-2);
+    right: var(--space-2);
+    bottom: -1px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .links a[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  /* Desktop: inline links, no menu button */
+  @media (min-width: 48rem) {
+    .toggle {
+      display: none;
+    }
+
+    .links {
+      position: static;
+      flex-direction: row;
+      gap: var(--space-1);
+      padding: 0;
+      background: none;
+      border: 0;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .links a {
+      min-height: var(--tap-target);
+      padding-inline: var(--space-3);
+      border-bottom: 0;
+    }
+
+    .links a::after {
+      left: var(--space-3);
+      right: var(--space-3);
+      bottom: 6px;
+    }
+  }
+</style>

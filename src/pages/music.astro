@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionStub from "../components/SectionStub.astro";
+
+const sections = [
+  { id: "journey", title: "Production journey" },
+  { id: "featured", title: "Featured track" },
+  { id: "listen", title: "Listen" },
+];
+---
+
+<Layout
+  title="Music"
+  description="Music by Sahil Sheth: production journey, featured track, and where to listen."
+>
+  <section class="hero">
+    <div class="container content">
+      <p class="mono-label">Music production</p>
+      <h1 class="display">Music</h1>
+      <p class="lede">Beats, mixes, and records made in Logic Pro.</p>
+    </div>
+  </section>
+
+  {sections.map((s, i) => (
+    <SectionStub
+      id={s.id}
+      index={String(i + 1).padStart(2, "0")}
+      title={s.title}
+      note="Content arrives in Phase 8."
+    />
+  ))}
+</Layout>
+
+<style>
+  .hero {
+    display: grid;
+    align-content: center;
+    min-height: 50svh;
+    background: radial-gradient(
+      60% 60% at 85% 0%,
+      var(--accent-soft),
+      transparent 70%
+    );
+  }
+
+  .content {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-8);
+  }
+
+  .lede {
+    max-width: 44ch;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    line-height: 1.5;
+  }
+</style>

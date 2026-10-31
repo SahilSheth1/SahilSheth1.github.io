@@ -1,0 +1,27 @@
+---
+// Temporary section shell. Phase 3 replaces each one with real content.
+const { id, index, title, note } = Astro.props;
+---
+
+<section id={id} class="section stub">
+  <div class="container">
+    <p class="mono-label">{index}</p>
+    <h2>{title}</h2>
+    {note && <p class="note">{note}</p>}
+  </div>
+</section>
+
+<style>
+  .stub {
+    border-top: 1px solid var(--border);
+  }
+
+  .container {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .note {
+    color: var(--text-subtle);
+  }
+</style>
