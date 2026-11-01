@@ -1,0 +1,32 @@
+---
+import Section from "../Section.astro";
+import { about } from "../../data/content.js";
+---
+
+<Section id="about" index="01" title="About">
+  <div class="prose">
+    <p class="lead">{about.lead}</p>
+    {about.paragraphs.map((p) => (
+      <p>{p}</p>
+    ))}
+    <p>
+      <a href="/music">Listen to the music</a>
+    </p>
+  </div>
+</Section>
+
+<style>
+  .prose {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .lead {
+    max-width: 22em;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+</style>

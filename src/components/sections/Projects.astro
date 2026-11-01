@@ -1,0 +1,68 @@
+---
+import Section from "../Section.astro";
+import { projects } from "../../data/content.js";
+---
+
+<Section id="projects" index="02" title="Projects">
+  <div class="list">
+    {projects.map((p) => (
+      <article class="card project">
+        <p class="mono-label">{p.kind}</p>
+        <h3>{p.title}</h3>
+        <p>{p.description}</p>
+        <ul class="tags">
+          {p.tags.map((t) => (
+            <li class="tag">{t}</li>
+          ))}
+        </ul>
+        {p.links.length > 0 && (
+          <div class="links">
+            {p.links.map((l) => (
+              <a
+                class="btn btn-secondary"
+                href={l.href}
+                rel="noopener noreferrer"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </article>
+    ))}
+    <p class="more small">More projects are on the way.</p>
+  </div>
+</Section>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .project {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .more {
+    color: var(--text-subtle);
+  }
+</style>

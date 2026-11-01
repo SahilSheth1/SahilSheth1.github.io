@@ -1,0 +1,106 @@
+---
+import Section from "../Section.astro";
+import { site } from "../../data/site.js";
+
+const strip = (url) => url.replace(/^https?:\/\/(www\.)?/, "");
+
+const contacts = [
+  { label: "GitHub", href: site.links.github },
+  { label: "LinkedIn", href: site.links.linkedin },
+].filter((c) => c.href);
+---
+
+<Section id="contact" index="06" title="Contact">
+  <div class="stack">
+    <p>The best way to reach me is through GitHub or LinkedIn.</p>
+    <ul class="cards">
+      {contacts.map((c) => (
+        <li>
+          <a class="contact-card" href={c.href} rel="noopener noreferrer">
+            <span class="mono-label">{c.label}</span>
+            <span class="handle">{strip(c.href)}</span>
+            <svg
+              class="arrow"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 14L14 6M7 6h7v7"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-card {
+    position: relative;
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    padding-right: var(--space-8);
+    background-color: var(--surface-1);
+    background-image: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+
+  .contact-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+
+  .handle {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .arrow {
+    position: absolute;
+    top: var(--space-5);
+    right: var(--space-5);
+    color: var(--accent);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .contact-card:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-card:hover,
+    .contact-card:hover .arrow {
+      transform: none;
+    }
+  }
+</style>
