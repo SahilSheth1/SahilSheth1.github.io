@@ -1,0 +1,35 @@
+---
+import Section from "../Section.astro";
+import { site } from "../../data/site.js";
+---
+
+<Section id="resume" index="05" title="Resume">
+  <div class="resume">
+    {site.resume ? (
+      <>
+        <p>Download my resume as a PDF.</p>
+        <div>
+          <a class="btn btn-primary" href={site.resume} download>
+            Download resume
+          </a>
+        </div>
+      </>
+    ) : (
+      <p class="soon">
+        My resume is on the way. In the meantime, you can see my work history on{" "}
+        <a href={site.links.linkedin} rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        .
+      </p>
+    )}
+  </div>
+</Section>
+
+<style>
+  .resume {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+</style>

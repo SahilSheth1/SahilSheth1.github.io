@@ -1,15 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import SectionStub from "../components/SectionStub.astro";
-
-const sections = [
-  { id: "about", title: "About" },
-  { id: "projects", title: "Projects" },
-  { id: "career", title: "Career and education" },
-  { id: "skills", title: "Skills" },
-  { id: "resume", title: "Resume" },
-  { id: "contact", title: "Contact" },
-];
+import About from "../components/sections/About.astro";
+import Projects from "../components/sections/Projects.astro";
+import Career from "../components/sections/Career.astro";
+import Skills from "../components/sections/Skills.astro";
+import Resume from "../components/sections/Resume.astro";
+import Contact from "../components/sections/Contact.astro";
 ---
 
 <Layout>
@@ -18,9 +14,8 @@ const sections = [
       <p class="mono-label">Software / Design / Music</p>
       <h1 class="display">Sahil Sheth</h1>
       <p class="lede">
-        I engineer intelligent tools from the ground up—developing predictive
-        models and crafting the seamless user interfaces that power them. In the
-        studio, I compose and produce digital music using Logic Pro.
+        I build predictive models and the interfaces that go with them. I also
+        produce music in Logic Pro, start to finish.
       </p>
       <div class="actions">
         <a class="btn btn-primary" href="#projects">
@@ -33,14 +28,12 @@ const sections = [
     </div>
   </section>
 
-  {sections.map((s, i) => (
-    <SectionStub
-      id={s.id}
-      index={String(i + 1).padStart(2, "0")}
-      title={s.title}
-      note="Content arrives in Phase 3."
-    />
-  ))}
+  <About />
+  <Projects />
+  <Career />
+  <Skills />
+  <Resume />
+  <Contact />
 </Layout>
 
 <style>

@@ -1,0 +1,161 @@
+---
+import Section from "../Section.astro";
+import { experience, education } from "../../data/content.js";
+---
+
+<Section id="career" index="03" title="Career and education">
+  <div class="groups">
+    <div>
+      <h3 class="group-title mono-label">Experience</h3>
+      <ol class="entries">
+        {experience.map((e) => (
+          <li class="entry">
+            <p class:list={["mono-label", { current: e.current }]}>{e.label}</p>
+            <div class="info">
+              <h4>{e.org}</h4>
+              <ul class="roles">
+                {e.roles.map((r) => (
+                  <li>
+                    <span class="org">{r.title}</span>
+                    {r.period && (
+                      <span class="mono-label period">{r.period}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {e.summary && <p class="summary">{e.summary}</p>}
+              {e.bullets.length > 0 && (
+                <ul class="bullets">
+                  {e.bullets.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div>
+      <h3 class="group-title mono-label">Education</h3>
+      <ol class="entries">
+        {education.map((e) => (
+          <li class="entry">
+            <p class:list={["mono-label", { current: e.current }]}>{e.label}</p>
+            <div class="info">
+              <h4>{e.school}</h4>
+              <p class="org">{e.degree}</p>
+              {e.details.length > 0 && (
+                <ul class="tags">
+                  {e.details.map((d) => (
+                    <li class="tag">{d}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .groups {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .group-title {
+    margin-bottom: var(--space-4);
+    font-family: var(--font-mono);
+    font-weight: 400;
+  }
+
+  .entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .entry {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .org {
+    color: var(--text-muted);
+  }
+
+  .roles {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-3);
+  }
+
+  .summary {
+    margin-top: var(--space-3);
+  }
+
+  .bullets {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--measure);
+    margin: var(--space-3) 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  .bullets li::marker {
+    color: var(--accent);
+  }
+
+  .current {
+    color: var(--accent);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .entry {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+
+    .entry > .mono-label {
+      padding-top: 0.3rem;
+    }
+  }
+</style>

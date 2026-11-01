@@ -1,0 +1,51 @@
+---
+// Shared shell for every home page section: numbered heading on the left
+// (sticky on wide screens), content on the right.
+const { id, index, title } = Astro.props;
+---
+
+<section id={id} class="section panel">
+  <div class="container layout">
+    <header class="head">
+      <p class="mono-label">{index}</p>
+      <h2>{title}</h2>
+    </header>
+    <div class="body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    border-top: 1px solid var(--border);
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .head {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    align-self: start;
+  }
+
+  .body {
+    min-width: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--space-8);
+    }
+
+    .head {
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-6));
+    }
+  }
+</style>
