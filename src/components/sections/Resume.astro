@@ -7,10 +7,15 @@ import { site } from "../../data/site.js";
   <div class="resume">
     {site.resume ? (
       <>
-        <p>Download my resume as a PDF.</p>
+        <p>My resume is available as a PDF.</p>
         <div>
-          <a class="btn btn-primary" href={site.resume} download>
-            Download resume
+          <a
+            class="btn btn-primary"
+            href={site.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View resume
           </a>
         </div>
       </>
