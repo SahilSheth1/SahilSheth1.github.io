@@ -5,6 +5,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/tokens.css";
 import "../styles/base.css";
+import "../styles/motion.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { site } from "../data/site.js";
@@ -39,6 +40,19 @@ const ogImage = new URL("/og.png", Astro.site);
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <script is:inline>
+      // Marks that scripts are running, so entrance animations may hide
+      // content. If the motion script hasn't started in 4 seconds, show
+      // everything instead.
+      document.documentElement.classList.add("js");
+      setTimeout(function () {
+        var root = document.documentElement;
+        if (!root.classList.contains("motion-ready")) {
+          root.classList.add("motion-off");
+        }
+      }, 4000);
+    </script>
+
     <ClientRouter />
   </head>
   <body>
@@ -50,6 +64,9 @@ const ogImage = new URL("/og.png", Astro.site);
       <slot />
     </main>
     <Footer />
+    <script>
+      import "../scripts/motion.js";
+    </script>
   </body>
 </html>
 

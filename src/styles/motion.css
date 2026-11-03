@@ -1,0 +1,22 @@
+/* Motion layer: starting states for entrance animations.
+   Content stays visible unless ALL of these are true:
+   - JavaScript is running (html.js, set in the head before first paint)
+   - the visitor has not asked for reduced motion
+   - the motion script has not failed (html.motion-off)
+   The animation itself lives in src/scripts/motion.js. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-off)
+    :is([data-reveal], .hero .content > *, .wrap .content > *):not(
+      [data-revealed]
+    ) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* While an element is being animated by script, ignore its CSS transitions
+   so the two don't fight over transform. */
+[data-animating] {
+  transition: none !important;
+}
