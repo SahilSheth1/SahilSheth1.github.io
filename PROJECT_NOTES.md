@@ -93,9 +93,9 @@ Do in order; don't start the next until "Done when" is met.
 | 0   | Setup and Git Foundations                         | `main`, `chore/setup`                          | **Done** (2026-10-28) |
 | 1   | Design Spec and Visual Foundation                 | `feature/design-system`                        | **Done** (2026-10-29) |
 | 2   | Layout Shell and Navigation                       | `feature/layout-shell`                         | **Done** (2026-10-31) |
-| 3   | Core Content (static)                             | one per section                                | **Next up**           |
-| 4   | Motion Layer                                      | `feature/motion`                               | Not started           |
-| 5   | Skills Mixing Board                               | `feature/skills-mixer`                         | Not started           |
+| 3   | Core Content (static)                             | `feature/core-content`                         | **Done** (2026-11-02) |
+| 4   | Motion Layer                                      | `feature/motion`                               | **Done** (2026-11-03) |
+| 5   | Skills Mixing Board                               | `feature/skills-mixer`                         | **Next up**           |
 | 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                      | Not started           |
 | 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                             | Not started           |
 | 8   | Music Page                                        | `feature/music-page`, `-embeds`, `-visualizer` | Not started           |
@@ -135,6 +135,22 @@ Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`
 - [x] Site details in `src/data/site.js` (GitHub, LinkedIn; no email)
 - Icon set still deferred: the menu button is drawn in CSS; install an icon package when a section needs real icons
 
+### Phase 3 summary (complete)
+
+- [x] About, Projects, Career and education, Skills (static), Resume, Contact, built from `src/data/content.js`
+- [x] Resume PDF at `public/Resume.pdf`, linked from `site.resume`; the button opens it in a new tab ("View resume")
+- Skipped by choice: headshot. Only one project so far (this portfolio); more to add later.
+- Known gaps: TI bullets sit under the company, not a single role; skills have no proficiency levels yet (Phase 5).
+
+### Phase 4 summary (complete)
+
+- [x] Lenis smooth scrolling, tuned (`lerp: 0.12`); in-page links stop under the nav
+- [x] GSAP ScrollTrigger entrances (`src/scripts/motion.js`, list of targets at the top); starting states in `src/styles/motion.css`
+- [x] Reduced motion and no-JS: content fully visible, native scroll; 4s fail-safe shows everything if the motion script never starts
+- [x] Checked at 100fps on a 100Hz display
+- Skipped by choice: intro or loading moment
+- Cost: about 50KB gzipped of JavaScript; revisit in Phase 11
+
 ## 9. Inputs still needed from me
 
 | Item                                                                                                          | Needed by |
@@ -171,5 +187,6 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 | 2026-10-29 | Palette: Signal Amber (amber `#FF9F1C` accent, teal `#3DDBC4` secondary, near-black `#0A0A0B`). Artist name: Sahil Sheth. Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (mono). Figma mockup and reference sites skipped; the style guide page and `DESIGN_SPEC.md` are the visual reference. Icon set (Lucide) deferred to Phase 2. Phase 1 complete. |
 
 | 2026-10-31 | No email contact anywhere on the site; Contact section uses GitHub and LinkedIn only (`linkedin.com/in/sahil-sheth1`). Nav active-section uses a scroll-position rule (last section whose top passed the nav), with a clicked link pinned until the next manual scroll. The amber dot beside the name in the nav stays as a decorative "studio LED" for now and becomes functional in Phase 7: it pulses while hero pad or music audio plays (plan: audio code sets `data-audio="playing"` on `<html>`; CSS animates the dot, transform/opacity only, off under reduced motion). |
+| 2026-11-03 | Phase 3 content: no headshot; one project (this site); skills list chosen by me and confirmed (incl. Python, LLMs and prompt engineering); degrees as `Bachelor of Science in Computer Science` (UTD, minor in Business Analytics and Intelligence, undergrad certificate in Data Science) and `Master's in Artificial Intelligence` (UT Austin). Resume opens in a new tab rather than downloading (a missing file now shows a 404 instead of saving an HTML page as a download). Phase 4: Lenis + GSAP, entrance animations, no intro; Phase 3 and 4 complete. |
 
 _Update the status table and decisions log as each phase completes._

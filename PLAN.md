@@ -320,10 +320,10 @@ Each phase ends with something working and merged. Do them in order, and don't s
 | -------------------------------------- | ----------- |
 | 0. Setup and Git Foundations           | Done        |
 | 1. Design Spec and Visual Foundation   | Done        |
-| 2. Layout Shell and Navigation         | Not started |
-| 3. Core Content                        | Not started |
-| 4. Motion Layer                        | Not started |
-| 5. Skills Mixing Board                 | Not started |
+| 2. Layout Shell and Navigation         | Done        |
+| 3. Core Content                        | Done        |
+| 4. Motion Layer                        | Done        |
+| 5. Skills Mixing Board                 | Done        |
 | 6. Career and Education DAW Timeline   | Not started |
 | 7. Hero Pad / Keyboard                 | Not started |
 | 8. Music Page                          | Not started |
