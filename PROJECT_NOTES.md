@@ -15,22 +15,22 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 ## 2. Pages
 
-| Page | Sections |
-|---|---|
-| `index.astro` | Hero, About, Projects, Career, Education, Skills, Resume, GitHub/LinkedIn links, Contact |
+| Page          | Sections                                                                                                   |
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
+| `index.astro` | Hero, About, Projects, Career, Education, Skills, Resume, GitHub/LinkedIn links, Contact                   |
 | `music.astro` | Production journey timeline, featured track, Spotify + Apple Music embeds, profile links, audio visualizer |
-| 404 | Designed 404 page |
+| 404           | Designed 404 page                                                                                          |
 
 ## 3. Interactive features (one home each)
 
-| Feature | Location |
-|---|---|
-| Playable pad/keyboard | Hero (main page) |
-| Skills as a mixing board | Skills section |
-| Career timeline as DAW tracks | Career and Education |
-| Audio visualizer | Music page, tied to featured track |
-| Cursor-reactive background | Site-wide, subtle |
-| Hidden terminal | Easter egg (shortcut or `>_` icon) |
+| Feature                       | Location                           |
+| ----------------------------- | ---------------------------------- |
+| Playable pad/keyboard         | Hero (main page)                   |
+| Skills as a mixing board      | Skills section                     |
+| Career timeline as DAW tracks | Career and Education               |
+| Audio visualizer              | Music page, tied to featured track |
+| Cursor-reactive background    | Site-wide, subtle                  |
+| Hidden terminal               | Easter egg (shortcut or `>_` icon) |
 
 ## 4. Tech stack
 
@@ -59,6 +59,7 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 - Real imagery only on the live site (no placeholders).
 
 **Five rules:**
+
 1. Content first, effects second; everything important works without JS or the toys.
 2. Normal behavior stays normal (predictable nav, natural scroll).
 3. No required discovery: resume, links, contact never hide behind a feature.
@@ -87,23 +88,24 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 Do in order; don't start the next until "Done when" is met.
 
-| # | Phase | Branch | Status |
-|---|---|---|---|
-| 0 | Setup and Git Foundations | `main`, `chore/setup` | **Done** (2026-10-28) |
-| 1 | Design Spec and Visual Foundation | `feature/design-system` | **Done** (2026-10-29) |
-| 2 | Layout Shell and Navigation | `feature/layout-shell` | **Done** (2026-10-31) |
-| 3 | Core Content (static) | `feature/core-content` | **Done** (2026-11-02) |
-| 4 | Motion Layer | `feature/motion` | **Done** (2026-11-03) |
-| 5 | Skills Mixing Board | n/a | **Dropped** (2026-11-04): skills stay a plain grouped list, no proficiency scale |
-| 6 | Career/Education DAW Timeline | `feature/career-timeline` | **Next up** |
-| 7 | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad` | Not started |
-| 8 | Music Page | `feature/music-page`, `-embeds`, `-visualizer` | Not started |
-| 9 | Cursor-Reactive Background | `feature/background` | Not started |
-| 10 | Hidden Terminal | `feature/terminal` | Not started |
-| 11 | Polish, Performance, Accessibility | `chore/polish` | Not started |
-| 12 | Launch and Maintenance | `chore/launch` | Not started |
+| #   | Phase                                             | Branch                                         | Status                                                                           |
+| --- | ------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------- |
+| 0   | Setup and Git Foundations                         | `main`, `chore/setup`                          | **Done** (2026-10-28)                                                            |
+| 1   | Design Spec and Visual Foundation                 | `feature/design-system`                        | **Done** (2026-10-29)                                                            |
+| 2   | Layout Shell and Navigation                       | `feature/layout-shell`                         | **Done** (2026-10-31)                                                            |
+| 3   | Core Content (static)                             | `feature/core-content`                         | **Done** (2026-11-02)                                                            |
+| 4   | Motion Layer                                      | `feature/motion`                               | **Done** (2026-11-03)                                                            |
+| 5   | Skills Mixing Board                               | n/a                                            | **Dropped** (2026-11-04): skills stay a plain grouped list, no proficiency scale |
+| 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                      | **Next up**                                                                      |
+| 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                             | Not started                                                                      |
+| 8   | Music Page                                        | `feature/music-page`, `-embeds`, `-visualizer` | Not started                                                                      |
+| 9   | Cursor-Reactive Background                        | `feature/background`                           | Not started                                                                      |
+| 10  | Hidden Terminal                                   | `feature/terminal`                             | Not started                                                                      |
+| 11  | Polish, Performance, Accessibility                | `chore/polish`                                 | Not started                                                                      |
+| 12  | Launch and Maintenance                            | `chore/launch`                                 | Not started                                                                      |
 
 ### Phase 0 checklist (complete)
+
 - [x] Install Node.js, Git, VS Code (with Astro extension)
 - [x] Create GitHub repo; configure git name and email
 - [x] Scaffold Astro project; first commit; push
@@ -117,6 +119,7 @@ Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`
 **Done when:** a blank Astro site is live at `yourusername.github.io` (or repo URL) and pushing to `main` redeploys it.
 
 ### Phase 1 summary (complete)
+
 - [x] Design spec: `DESIGN_SPEC.md` (Signal Amber)
 - [x] `src/styles/tokens.css` and `src/styles/base.css`
 - [x] Self-hosted fonts: Space Grotesk, Inter, JetBrains Mono (`@fontsource-variable/*`)
@@ -125,6 +128,7 @@ Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`
 - Skipped by choice: Figma mockup, reference sites
 
 ### Phase 2 summary (complete)
+
 - [x] `Layout.astro` (meta, Open Graph, skip link, view transitions), `Nav.astro`, `Footer.astro`
 - [x] `index.astro` (hero + section shells), `music.astro` shell, designed 404
 - [x] Favicon and 1200x630 OG image
@@ -132,12 +136,14 @@ Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`
 - Icon set still deferred: the menu button is drawn in CSS; install an icon package when a section needs real icons
 
 ### Phase 3 summary (complete)
+
 - [x] About, Projects, Career and education, Skills (static), Resume, Contact, built from `src/data/content.js`
 - [x] Resume PDF at `public/Resume.pdf`, linked from `site.resume`; the button opens it in a new tab ("View resume")
 - Skipped by choice: headshot. Only one project so far (this portfolio); more to add later.
 - Known gaps: TI bullets sit under the company, not a single role; skills are intentionally a plain list with no proficiency levels.
 
 ### Phase 4 summary (complete)
+
 - [x] Lenis smooth scrolling, tuned (`lerp: 0.12`); in-page links stop under the nav
 - [x] GSAP ScrollTrigger entrances (`src/scripts/motion.js`, list of targets at the top); starting states in `src/styles/motion.css`
 - [x] Reduced motion and no-JS: content fully visible, native scroll; 4s fail-safe shows everything if the motion script never starts
@@ -147,16 +153,16 @@ Live at https://SahilSheth1.github.io. Repo: `SahilSheth1/SahilSheth1.github.io`
 
 ## 9. Inputs still needed from me
 
-| Item | Needed by |
-|---|---|
-| ~~Accent color(s), artist name/brand~~ (done: Signal Amber, "Sahil Sheth"); reference sites (skipped for now) | Phase 1 |
-| Headshot and studio photos | Phase 3 |
-| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design) | Phase 3 |
-| Career and education details, resume PDF | Phase 3 |
-| ~~Skills list with honest proficiency levels~~ (dropped) | n/a |
-| Logic Pro sample exports for the pad (8-16, compressed) | Phase 7 |
-| Music story, milestones, album art, Spotify + Apple Music links | Phase 8 |
-| Featured track audio (self-hosted, rights cleared) | Phase 8 |
+| Item                                                                                                          | Needed by |
+| ------------------------------------------------------------------------------------------------------------- | --------- |
+| ~~Accent color(s), artist name/brand~~ (done: Signal Amber, "Sahil Sheth"); reference sites (skipped for now) | Phase 1   |
+| Headshot and studio photos                                                                                    | Phase 3   |
+| Project details, screenshots, repo + live links (3-4 projects, incl. 1-2 AI/ML and 1-2 design)                | Phase 3   |
+| Career and education details, resume PDF                                                                      | Phase 3   |
+| ~~Skills list with honest proficiency levels~~ (dropped)                                                      | n/a       |
+| Logic Pro sample exports for the pad (8-16, compressed)                                                       | Phase 7   |
+| Music story, milestones, album art, Spotify + Apple Music links                                               | Phase 8   |
+| Featured track audio (self-hosted, rights cleared)                                                            | Phase 8   |
 
 ## 10. Pitfalls to avoid
 
@@ -174,10 +180,10 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 
 ## 12. Decisions log
 
-| Date | Decision |
-|---|---|
-| 2026-10-27 | Plan finalized in `PLAN.md`; starting at Phase 0. Context captured in this file. |
-| 2026-10-28 | Repo named `SahilSheth1.github.io` (site served at root, no base path). Node 24, npm 11, Git 2.49. ESLint pinned to v9 (`@eslint/js@9` must match; v10 conflicts with current plugins). Prettier + `prettier-plugin-astro`. Deploy via `withastro/action@v3` + `actions/deploy-pages@v4`. Phase 0 complete. |
+| Date       | Decision                                                                                                                                                                                                                                                                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-27 | Plan finalized in `PLAN.md`; starting at Phase 0. Context captured in this file.                                                                                                                                                                                                                                                                                      |
+| 2026-10-28 | Repo named `SahilSheth1.github.io` (site served at root, no base path). Node 24, npm 11, Git 2.49. ESLint pinned to v9 (`@eslint/js@9` must match; v10 conflicts with current plugins). Prettier + `prettier-plugin-astro`. Deploy via `withastro/action@v3` + `actions/deploy-pages@v4`. Phase 0 complete.                                                           |
 | 2026-10-29 | Palette: Signal Amber (amber `#FF9F1C` accent, teal `#3DDBC4` secondary, near-black `#0A0A0B`). Artist name: Sahil Sheth. Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (mono). Figma mockup and reference sites skipped; the style guide page and `DESIGN_SPEC.md` are the visual reference. Icon set (Lucide) deferred to Phase 2. Phase 1 complete. |
 
 | 2026-10-31 | No email contact anywhere on the site; Contact section uses GitHub and LinkedIn only (`linkedin.com/in/sahil-sheth1`). Nav active-section uses a scroll-position rule (last section whose top passed the nav), with a clicked link pinned until the next manual scroll. The amber dot beside the name in the nav stays as a decorative "studio LED" for now and becomes functional in Phase 7: it pulses while hero pad or music audio plays (plan: audio code sets `data-audio="playing"` on `<html>`; CSS animates the dot, transform/opacity only, off under reduced motion). |
