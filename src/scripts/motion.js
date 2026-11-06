@@ -20,7 +20,8 @@ const REVEAL = [
   ".panel .head", // section number and title
   ".prose > *", // About
   ".project, .list > .more", // Projects
-  ".group-title, .entry", // Career and education
+  ".group-title, .entry", // Career and education list
+  ".tl, .linear-wrap", // Career timeline
   ".grid > .group", // Skills
   ".resume", // Resume
   ".stack > p, .cards > li", // Contact

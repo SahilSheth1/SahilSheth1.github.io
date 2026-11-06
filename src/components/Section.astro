@@ -1,11 +1,12 @@
 ---
 // Shared shell for every home page section: numbered heading on the left
-// (sticky on wide screens), content on the right.
-const { id, index, title } = Astro.props;
+// (sticky on wide screens), content on the right. Pass `wide` to put the
+// heading above the content so the content gets the full width.
+const { id, index, title, wide = false } = Astro.props;
 ---
 
 <section id={id} class="section panel">
-  <div class="container layout">
+  <div class:list={["container", "layout", { wide }]}>
     <header class="head">
       <p class="mono-label">{index}</p>
       <h2>{title}</h2>
@@ -46,6 +47,15 @@ const { id, index, title } = Astro.props;
     .head {
       position: sticky;
       top: calc(var(--nav-height) + var(--space-6));
+    }
+
+    .layout.wide {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+
+    .layout.wide .head {
+      position: static;
     }
   }
 </style>

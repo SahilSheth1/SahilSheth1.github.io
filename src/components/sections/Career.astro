@@ -1,67 +1,771 @@
 ---
 import Section from "../Section.astro";
-import { experience, education } from "../../data/content.js";
+import { experience, education, music } from "../../data/content.js";
+import { getReleases } from "../../data/releases.js";
+import {
+  buildTimeline,
+  period,
+  dateLabel,
+  byYear,
+} from "../../data/timeline-data.js";
+
+const releases = await getReleases();
+const tl = buildTimeline(releases);
+const years = byYear(releases);
+
+// Detail text for each clip comes from the same data as the plain list
+const info = Object.fromEntries(
+  [...experience, ...education, music].map((i) => [i.id, i]),
+);
+const kindOfLane = { work: "Work", education: "School", music: "Music" };
+const SHOWN = 6; // releases listed before "Show all"
 ---
 
-<Section id="career" index="03" title="Career and education">
-  <div class="groups">
-    <div>
-      <h3 class="group-title mono-label">Experience</h3>
-      <ol class="entries">
-        {experience.map((e) => (
-          <li class="entry">
-            <p class:list={["mono-label", { current: e.current }]}>{e.label}</p>
-            <div class="info">
-              <h4>{e.org}</h4>
-              <ul class="roles">
-                {e.roles.map((r) => (
-                  <li>
-                    <span class="org">{r.title}</span>
-                    {r.period && (
-                      <span class="mono-label period">{r.period}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-              {e.summary && <p class="summary">{e.summary}</p>}
-              {e.bullets.length > 0 && (
-                <ul class="bullets">
-                  {e.bullets.map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              )}
+<Section id="career" index="03" title="Career and education" wide>
+  <div class="career" data-career>
+    <div class="tl">
+      <div class="bar">
+        <p class="hint mono-label">
+          Drag the playhead, scroll sideways, or pick a clip.
+        </p>
+        <button class="btn btn-secondary now" type="button" data-now>
+          Jump to now
+        </button>
+      </div>
+
+      <div class="grid">
+        <div class="labels" aria-hidden="true">
+          <div class="spacer"></div>
+          {tl.lanes.map((lane) => (
+            <p class:list={["label", "mono-label", lane.id]}>{lane.label}</p>
+          ))}
+        </div>
+
+        <div
+          class="viewport"
+          data-viewport
+          tabindex="0"
+          role="region"
+          aria-label="Career timeline. Scrolls sideways."
+        >
+          <div
+            class="canvas"
+            data-canvas
+            data-start={tl.axisStart}
+            data-total={tl.total}
+            data-now-at={tl.nowIdx}
+            style={`--total: ${tl.total}`}
+          >
+            <div class="ruler" data-ruler>
+              {tl.ticks.map((t) => (
+                <span class="tick" style={`--at: ${t.at}`}>
+                  {t.year}
+                </span>
+              ))}
             </div>
-          </li>
-        ))}
-      </ol>
+
+            {tl.lanes.map((lane) => (
+              <div class:list={["lane", lane.id]} data-lane>
+                {lane.clips.map((c) => (
+                  <button
+                    type="button"
+                    class:list={[
+                      c.marker ? "marker" : "clip",
+                      { current: c.current },
+                    ]}
+                    style={`--s: ${c.start.toFixed(3)}; --l: ${(c.shown - c.start).toFixed(3)}`}
+                    data-clip
+                    data-id={c.id}
+                    data-name={c.name}
+                    data-start={c.start.toFixed(3)}
+                    data-end={c.end.toFixed(3)}
+                    data-mid={c.mid.toFixed(3)}
+                    data-default={c.id === "ti-full-time" ? "" : undefined}
+                    aria-label={c.label}
+                    aria-pressed="false"
+                    aria-controls={`detail-${c.id}`}
+                  >
+                    {c.marker ? (
+                      c.count > 1 && <span class="count">{c.count}</span>
+                    ) : (
+                      <>
+                        <span class="clip-text">
+                          <span class="clip-name">{c.name}</span>
+                          <span class="clip-sub">{c.sub}</span>
+                        </span>
+                      </>
+                    )}
+                  </button>
+                ))}
+              </div>
+            ))}
+
+            <div class="playhead" data-playhead>
+              <span
+                class="handle"
+                data-handle
+                role="slider"
+                tabindex="0"
+                aria-label="Playhead date"
+                aria-orientation="horizontal"
+                aria-valuemin="0"
+                aria-valuemax={Math.round(tl.nowIdx)}
+                aria-valuenow={Math.round(tl.nowIdx)}
+              >
+                <span class="flag" data-flag></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="readout mono-label" data-readout aria-hidden="true"></p>
+
+      <div class="detail-wrap" data-details aria-live="polite">
+        {tl.lanes.flatMap((lane) =>
+          lane.clips.map((c) => {
+            const i = info[c.id];
+            return (
+              <div
+                class="detail"
+                id={`detail-${c.id}`}
+                data-detail={c.id}
+                hidden
+              >
+                <p class="mono-label">
+                  {kindOfLane[lane.id]}
+                  {" / "}
+                  {c.marker ? c.range : period(i.start, i.end)}
+                </p>
+
+                {c.marker ? (
+                  <>
+                    <h4>
+                      {c.count === 1
+                        ? c.releases[0].kind
+                        : `${c.count} releases`}
+                    </h4>
+                    <ul
+                      class="rel-list"
+                      tabindex={c.count > SHOWN ? 0 : undefined}
+                      aria-label={
+                        c.count > SHOWN ? "Releases. Scrolls." : undefined
+                      }
+                    >
+                      {c.releases.map((r, n) => (
+                        <li
+                          hidden={n >= SHOWN}
+                          data-extra={n >= SHOWN ? "" : undefined}
+                        >
+                          {r.art ? (
+                            <img
+                              src={r.art}
+                              alt=""
+                              width="44"
+                              height="44"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <span class="art" aria-hidden="true" />
+                          )}
+                          <span class="rel-text">
+                            {r.url ? (
+                              <a href={r.url} target="_blank" rel="noopener">
+                                {r.title}
+                              </a>
+                            ) : (
+                              <span>{r.title}</span>
+                            )}
+                            <span class="rel-meta">
+                              {r.kind} / {dateLabel(r.date)}
+                            </span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {c.count > SHOWN && (
+                      <button
+                        class="btn btn-ghost more"
+                        type="button"
+                        data-more
+                      >
+                        Show all {c.count}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h4>{i.title || i.degree}</h4>
+                    <p class="org">{i.org || i.school}</p>
+                    {i.summary && <p class="summary">{i.summary}</p>}
+                    {i.bullets && i.bullets.length > 0 && (
+                      <ul class="bullets">
+                        {i.bullets.map((b) => (
+                          <li>{b}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {i.details && i.details.length > 0 && (
+                      <ul class="tags">
+                        {i.details.map((d) => (
+                          <li class="tag">{d}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {c.id === "music" && releases.length > 0 && (
+                      <p class="org">{releases.length} released so far.</p>
+                    )}
+                    {c.id === "music" && (
+                      <a class="btn btn-secondary go" href="/music">
+                        More on the music page
+                      </a>
+                    )}
+                  </>
+                )}
+              </div>
+            );
+          }),
+        )}
+      </div>
     </div>
 
-    <div>
-      <h3 class="group-title mono-label">Education</h3>
-      <ol class="entries">
-        {education.map((e) => (
-          <li class="entry">
-            <p class:list={["mono-label", { current: e.current }]}>{e.label}</p>
-            <div class="info">
-              <h4>{e.school}</h4>
-              <p class="org">{e.degree}</p>
-              {e.details.length > 0 && (
-                <ul class="tags">
-                  {e.details.map((d) => (
-                    <li class="tag">{d}</li>
+    <div class="linear-wrap">
+      <details class="linear" open data-linear>
+        <summary>Read it as a list</summary>
+        <div class="groups">
+          <div>
+            <h3 class="group-title mono-label">Experience</h3>
+            <ol class="entries">
+              {experience.map((e) => (
+                <li class="entry">
+                  <p class:list={["mono-label", { current: !e.end }]}>
+                    {period(e.start, e.end)}
+                  </p>
+                  <div class="info">
+                    <h4>{e.org}</h4>
+                    <p class="org">{e.title}</p>
+                    {e.summary && <p class="summary">{e.summary}</p>}
+                    {e.bullets.length > 0 && (
+                      <ul class="bullets">
+                        {e.bullets.map((b) => (
+                          <li>{b}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div>
+            <h3 class="group-title mono-label">Education</h3>
+            <ol class="entries">
+              {education.map((e) => (
+                <li class="entry">
+                  <p class:list={["mono-label", { current: !e.end }]}>
+                    {period(e.start, e.end)}
+                  </p>
+                  <div class="info">
+                    <h4>{e.school}</h4>
+                    <p class="org">{e.degree}</p>
+                    {e.details.length > 0 && (
+                      <ul class="tags">
+                        {e.details.map((d) => (
+                          <li class="tag">{d}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div>
+            <h3 class="group-title mono-label">Music</h3>
+            <ol class="entries">
+              <li class="entry">
+                <p class="mono-label current">
+                  {period(music.start, music.end)}
+                </p>
+                <div class="info">
+                  <h4>{music.title}</h4>
+                  <p class="summary">{music.summary}</p>
+                  {years.map((y, n) => (
+                    <details class="year" open={n === 0}>
+                      <summary>
+                        {y.year} ({y.list.length})
+                      </summary>
+                      <ul class="year-list">
+                        {y.list.map((r) => (
+                          <li>
+                            {r.url ? (
+                              <a href={r.url} target="_blank" rel="noopener">
+                                {r.title}
+                              </a>
+                            ) : (
+                              r.title
+                            )}
+                            <span class="rel-meta">
+                              {r.kind} / {dateLabel(r.date)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
                   ))}
-                </ul>
-              )}
-            </div>
-          </li>
-        ))}
-      </ol>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
 </Section>
 
 <style>
+  /* ============ Timeline (wide screens, needs JavaScript) ============ */
+  .career {
+    --mo: calc(22rem / 12); /* width of one month on the timeline */
+    --lane-h: 4.25rem;
+    --music-h: 6.25rem;
+    --ruler-h: 2.5rem;
+  }
+
+  .tl {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .career[data-ready] .tl {
+      display: block;
+    }
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .hint {
+    color: var(--text-subtle);
+  }
+
+  .now {
+    min-height: var(--tap-target);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .labels {
+    border-right: 1px solid var(--border-strong);
+  }
+
+  .spacer {
+    height: var(--ruler-h);
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    height: var(--lane-h);
+    padding-left: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .label.music {
+    height: var(--music-h);
+  }
+
+  .viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    cursor: grab;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+
+  .viewport[data-dragging] {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .canvas {
+    position: relative;
+    width: calc(var(--mo) * var(--total));
+  }
+
+  /* ---- Ruler ---- */
+  .ruler {
+    position: relative;
+    height: var(--ruler-h);
+    cursor: ew-resize;
+    touch-action: pan-y;
+  }
+
+  .tick {
+    position: absolute;
+    bottom: 0;
+    left: calc(var(--mo) * var(--at));
+    height: 60%;
+    padding: 0 0 var(--space-2) var(--space-2);
+    border-left: 1px solid var(--border-strong);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--tracking-mono);
+    pointer-events: none;
+  }
+
+  /* ---- Lanes ---- */
+  .lane {
+    position: relative;
+    height: var(--lane-h);
+    border-top: 1px solid var(--border);
+    background-image: linear-gradient(
+      to right,
+      var(--border) 1px,
+      transparent 1px
+    );
+    background-size: calc(var(--mo) * 12) 100%;
+    background-position: calc(var(--mo) * 5) 0;
+  }
+
+  .lane.music {
+    height: var(--music-h);
+  }
+
+  .clip {
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: calc(var(--mo) * var(--s));
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    width: calc(var(--mo) * var(--l) - 4px);
+    min-width: 0;
+    padding: 0;
+    color: var(--text);
+    text-align: left;
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  .lane.work .clip {
+    background: var(--accent-soft);
+    border-color: rgba(255, 159, 28, 0.4);
+  }
+
+  /* Ongoing: the clip fades out to the right instead of ending */
+  .clip.current::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 2.5rem;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--surface-1));
+  }
+
+  .lane.music .clip {
+    top: auto;
+    bottom: 0.5rem;
+    height: 2.75rem;
+  }
+
+  /* The label stays in view while a long clip scrolls past */
+  .clip-text {
+    position: sticky;
+    left: 0;
+    display: grid;
+    gap: 2px;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 var(--space-3);
+  }
+
+  .clip-name,
+  .clip-sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .clip-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .clip-sub {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .clip:hover,
+  .clip[aria-pressed="true"] {
+    border-color: var(--accent);
+  }
+
+  .clip[aria-pressed="true"] {
+    box-shadow: var(--glow-accent);
+  }
+
+  .clip[data-under]:not([aria-pressed="true"]) {
+    border-color: rgba(61, 219, 196, 0.6);
+  }
+
+  /* Release markers: diamonds sitting above the music clip */
+  .marker {
+    position: absolute;
+    top: 0.5rem;
+    left: calc(var(--mo) * var(--s) - 1.375rem);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--accent-ink);
+    cursor: pointer;
+    background: none;
+    border: 0;
+  }
+
+  .marker::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 3px;
+    transform: rotate(45deg);
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  .marker:hover::before,
+  .marker[aria-pressed="true"]::before {
+    box-shadow: var(--glow-accent);
+    transform: rotate(45deg) scale(1.25);
+  }
+
+  .marker .count {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .marker:has(.count)::before {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+  }
+
+  /* ---- Playhead ---- */
+  .playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    transform: translateX(calc(var(--mo) * var(--p, 0)));
+    border-left: 1px solid var(--secondary);
+    pointer-events: none;
+  }
+
+  .handle {
+    position: absolute;
+    top: 0;
+    left: -1.375rem;
+    display: block;
+    width: 2.75rem;
+    height: var(--ruler-h);
+    cursor: ew-resize;
+    pointer-events: auto;
+    touch-action: pan-y;
+  }
+
+  .handle::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    background: var(--secondary);
+    border-radius: 3px 3px 7px 7px;
+  }
+
+  .flag {
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    padding: 1px 6px;
+    color: var(--accent-ink);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: var(--secondary);
+    border-radius: 4px;
+    transform: translateX(-50%);
+  }
+
+  .handle:focus-visible::before {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  /* ---- Readout and details ---- */
+  .readout {
+    min-height: 1.5em;
+    margin-top: var(--space-3);
+    color: var(--text-subtle);
+  }
+
+  .detail-wrap {
+    margin-top: var(--space-4);
+  }
+
+  .detail {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    max-width: var(--measure);
+    min-height: 9rem;
+    padding: var(--space-5);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .detail[hidden],
+  .detail [hidden] {
+    display: none;
+  }
+
+  .detail .go,
+  .detail .more {
+    justify-self: start;
+    margin-top: var(--space-2);
+  }
+
+  .rel-list,
+  .year-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rel-list {
+    max-height: 24rem;
+    padding-right: var(--space-2);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .rel-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .rel-list img,
+  .art {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    background: var(--surface-3);
+    border-radius: var(--radius-sm);
+  }
+
+  .rel-text {
+    display: grid;
+    min-width: 0;
+  }
+
+  .rel-meta {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--tracking-mono);
+  }
+
+  /* ============ Plain list (phones, no JavaScript, screen readers) ============ */
+  .linear-wrap {
+    margin-top: var(--space-6);
+  }
+
+  .linear > summary {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .career[data-ready] .linear > summary {
+      display: flex;
+    }
+  }
+
+  summary {
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--tap-target);
+    padding-block: var(--space-3);
+    color: var(--text);
+    font-weight: 500;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .year > summary {
+    display: flex;
+    padding-block: var(--space-2);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+  }
+
+  .year-list li {
+    display: grid;
+    gap: 2px;
+  }
+
   .groups {
     display: grid;
     gap: var(--space-8);
@@ -103,23 +807,8 @@ import { experience, education } from "../../data/content.js";
     color: var(--text-muted);
   }
 
-  .roles {
-    display: grid;
-    gap: var(--space-1);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .roles li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: var(--space-3);
-  }
-
   .summary {
-    margin-top: var(--space-3);
+    margin-top: var(--space-2);
   }
 
   .bullets {
@@ -156,6 +845,18 @@ import { experience, education } from "../../data/content.js";
 
     .entry > .mono-label {
       padding-top: 0.3rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .groups {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+
+    .entry {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
     }
   }
 </style>
