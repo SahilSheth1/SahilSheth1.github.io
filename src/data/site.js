@@ -15,6 +15,10 @@ export const site = {
     github: "https://github.com/SahilSheth1",
     linkedin: "https://www.linkedin.com/in/sahil-sheth1",
   },
+  // The number in your Apple Music artist link:
+  // music.apple.com/us/artist/sahil-sheth/1234567890  ->  "1234567890"
+  // Leave empty to skip the automatic release list.
+  appleMusicArtistId: "1816990873",
   nav: [
     { label: "About", href: "/#about", section: "about" },
     { label: "Projects", href: "/#projects", section: "projects" },
