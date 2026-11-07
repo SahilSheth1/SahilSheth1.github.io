@@ -96,8 +96,8 @@ Do in order; don't start the next until "Done when" is met.
 | 3   | Core Content (static)                             | `feature/core-content`                         | **Done** (2026-11-02)                                                            |
 | 4   | Motion Layer                                      | `feature/motion`                               | **Done** (2026-11-03)                                                            |
 | 5   | Skills Mixing Board                               | n/a                                            | **Dropped** (2026-11-04): skills stay a plain grouped list, no proficiency scale |
-| 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                      | **Next up**                                                                      |
-| 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                             | Not started                                                                      |
+| 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                      | **Done** (2026-11-07)                                                            |
+| 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                             | **In review** (built, awaiting merge)                                            |
 | 8   | Music Page                                        | `feature/music-page`, `-embeds`, `-visualizer` | Not started                                                                      |
 | 9   | Cursor-Reactive Background                        | `feature/background`                           | Not started                                                                      |
 | 10  | Hidden Terminal                                   | `feature/terminal`                             | Not started                                                                      |
@@ -191,3 +191,5 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 | 2026-11-04 | Phase 5 mixing board dropped. Skills are just listed, no proficiency ratings, no faders. The Phase 3 grouped skills cards stay as the final design. Sound still planned for Phase 7. |
 
 _Update the status table and decisions log as each phase completes._
+| 2026-11-05 | Phase 6 decisions: three lanes (Work, School, Music); music started May 2021; Allen HS Aug 2018 - Jun 2022; UT Austin from Aug 2026; TI split into intern (Jun - Aug 2026) and full-time (Sept 2026 - present), with bullets split by tense (to confirm). Release dates come from Apple Music at build time (public iTunes lookup, artist id in `site.js`), rebuilt daily by GitHub Actions. Dense catalogs merge into numbered markers. Plain list stays as the mobile / no-JS version. |
+| 2026-11-07 | Phase 6 live (Apple Music releases sync). Phase 7 decisions: 12 pads in the hero (4 chords, 2 808s, 2 vocal chops, 4 drums), 120 BPM, C major, a mix of drums and melody so any combination fits. Placeholder sounds are made in code; real Logic Pro exports go in `public/audio/` and get wired in `src/data/pad.js`. Sound is off by default; hitting a pad or the button turns it on; keys work only once sound is on. Nav dot pulses with the volume via `html[data-audio="playing"]` and `--audio-level`. |
