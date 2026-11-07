@@ -6,6 +6,7 @@ import Career from "../components/sections/Career.astro";
 import Skills from "../components/sections/Skills.astro";
 import Resume from "../components/sections/Resume.astro";
 import Contact from "../components/sections/Contact.astro";
+import Pad from "../components/Pad.astro";
 ---
 
 <Layout>
@@ -25,6 +26,7 @@ import Contact from "../components/sections/Contact.astro";
           Listen to music
         </a>
       </div>
+      <Pad />
     </div>
   </section>
 
@@ -69,5 +71,25 @@ import Contact from "../components/sections/Contact.astro";
 
   .actions .btn {
     background-image: none;
+  }
+
+  /* Wide screens: text on the left, the pad on the right */
+  @media (min-width: 64rem) {
+    .content {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-rows: 1fr repeat(4, auto) 1fr;
+      column-gap: var(--space-8);
+    }
+
+    .content > :not(:global(.pad)) {
+      grid-column: 1;
+    }
+
+    .content > :global(.pad) {
+      grid-column: 2;
+      grid-row: 1 / span 6;
+      align-self: center;
+      justify-self: end;
+    }
   }
 </style>

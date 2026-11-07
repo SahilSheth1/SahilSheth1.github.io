@@ -1,0 +1,206 @@
+---
+import { pads, padMeta } from "../data/pad.js";
+---
+
+<div
+  class="pad"
+  data-pad
+  role="group"
+  aria-label="Sound pad. Play drums, bass, vocals and chords with the pads or your keyboard."
+>
+  <div class="top">
+    <p class="mono-label">
+      Pad / {padMeta.bpm} BPM / {padMeta.key}
+    </p>
+  </div>
+
+  <div class="grid">
+    {pads.map((p) => (
+      <button
+        class="key"
+        type="button"
+        data-pad-id={p.id}
+        data-key={p.key}
+        aria-label={p.name}
+        aria-keyshortcuts={p.key.toUpperCase()}
+      >
+        <span class="flash" aria-hidden="true"></span>
+        <span class="ripple" aria-hidden="true"></span>
+        <span class="name" aria-hidden="true">
+          {p.label}
+        </span>
+        <span class="hint" aria-hidden="true">
+          {p.key.toUpperCase()}
+        </span>
+      </button>
+    ))}
+  </div>
+
+  <div class="controls">
+    <button
+      class="btn btn-secondary sound"
+      type="button"
+      data-sound
+      aria-pressed="false"
+    >
+      Tap to enable sound
+    </button>
+    <label class="volume">
+      <span class="visually-hidden">Volume</span>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="80"
+        data-volume
+        disabled
+        aria-label="Volume"
+      />
+    </label>
+  </div>
+
+  <p class="visually-hidden" role="status" data-status></p>
+</div>
+
+<style>
+  .pad {
+    display: none;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 30rem;
+    padding: var(--space-4);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  /* No JavaScript, no pad */
+  :global(html.js) .pad {
+    display: grid;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .key {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    min-width: var(--tap-target);
+    padding: 0;
+    overflow: hidden;
+    color: var(--text);
+    cursor: pointer;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .key:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .key[data-down] {
+    border-color: var(--accent);
+    transform: scale(0.96);
+  }
+
+  .name {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-mono);
+  }
+
+  .hint {
+    position: absolute;
+    right: var(--space-2);
+    bottom: var(--space-2);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+  }
+
+  @media (hover: none) {
+    .hint {
+      display: none;
+    }
+  }
+
+  /* Hit feedback: a flash and a ring. Only opacity and transform move. */
+  .flash {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    aspect-ratio: 1;
+    margin: -50% 0 0 -50%;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .sound {
+    flex: 1 1 auto;
+    min-height: var(--tap-target);
+  }
+
+  .sound[aria-pressed="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .volume {
+    display: flex;
+    align-items: center;
+    flex: 1 1 7rem;
+    min-height: var(--tap-target);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    height: var(--tap-target);
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  input[type="range"]:disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+</style>
