@@ -223,6 +223,19 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     border-radius: 50%;
     background: var(--accent);
     box-shadow: var(--glow-accent);
+    /* --audio-level (0 to 1) is set by audio.js while the pad is playing */
+    transform: scale(calc(1 + var(--audio-level, 0) * 1.1));
+  }
+
+  /* Reduced motion: no size change, a brighter glow instead */
+  @media (prefers-reduced-motion: reduce) {
+    .brand::before {
+      transform: none;
+    }
+
+    :global(html[data-audio="playing"]) .brand::before {
+      box-shadow: 0 0 14px var(--accent);
+    }
   }
 
   /* Menu button (mobile) */
