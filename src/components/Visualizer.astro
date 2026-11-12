@@ -1,0 +1,234 @@
+---
+// A player for a track hosted on this site, with an audio visualizer.
+// Without JavaScript it is a normal browser audio player.
+const { src, title, artist = "", cover = "" } = Astro.props;
+---
+
+<div
+  class="viz"
+  data-viz
+  data-title={title}
+  data-artist={artist}
+  data-cover={cover}
+>
+  <audio data-audio-el src={src} controls preload="metadata">
+    Your browser can't play this audio.
+  </audio>
+
+  <div class="ui">
+    <canvas class="screen" data-canvas aria-hidden="true"></canvas>
+
+    <div class="bar">
+      <button class="play" type="button" data-play aria-label={`Play ${title}`}>
+        <svg
+          class="i-play"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+        >
+          <path d="M6 3.5v13l11-6.5z" fill="currentColor" />
+        </svg>
+        <svg
+          class="i-pause"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+        >
+          <path d="M5 3.5h4v13H5zM11 3.5h4v13h-4z" fill="currentColor" />
+        </svg>
+      </button>
+
+      <span class="time mono-label" data-time aria-hidden="true">
+        0:00 / 0:00
+      </span>
+
+      <input
+        class="scrub"
+        type="range"
+        min="0"
+        max="1000"
+        value="0"
+        step="1"
+        data-scrub
+        aria-label="Seek"
+      />
+
+      <button
+        class="mute"
+        type="button"
+        data-mute
+        aria-pressed="false"
+        aria-label="Mute"
+      >
+        <svg
+          class="i-sound"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path d="M3 8v4h3l4 3.5v-11L6 8H3z" fill="currentColor" />
+          <path
+            d="M13 7.5a3.5 3.5 0 010 5M15.5 5a7 7 0 010 10"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <svg
+          class="i-muted"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path d="M3 8v4h3l4 3.5v-11L6 8H3z" fill="currentColor" />
+          <path
+            d="M13.5 7.5l5 5M18.5 7.5l-5 5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <p class="status" role="status" data-status></p>
+  </div>
+</div>
+
+<style>
+  .viz {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  audio {
+    width: 100%;
+  }
+
+  /* The custom player replaces the browser one once the script is running */
+  .ui {
+    display: none;
+  }
+
+  .viz[data-ready] audio {
+    display: none;
+  }
+
+  .viz[data-ready] .ui {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .screen {
+    display: block;
+    width: 100%;
+    height: 9rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 40rem) {
+    .screen {
+      height: 13rem;
+    }
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .play,
+  .mute {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    padding: 0;
+    color: var(--text);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+
+  .play {
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .play:hover {
+    background: var(--accent-hover);
+  }
+
+  .mute:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .mute[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .i-pause,
+  .i-muted {
+    display: none;
+  }
+
+  .viz[data-playing] .i-play,
+  .mute[aria-pressed="true"] .i-sound {
+    display: none;
+  }
+
+  .viz[data-playing] .i-pause,
+  .mute[aria-pressed="true"] .i-muted {
+    display: block;
+  }
+
+  .time {
+    flex: none;
+    min-width: 6.5rem;
+    color: var(--text-subtle);
+  }
+
+  .scrub {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: var(--tap-target);
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .status {
+    color: var(--text-subtle);
+    font-size: var(--fs-small);
+  }
+
+  @media (max-width: 30rem) {
+    .time {
+      display: none;
+    }
+  }
+</style>

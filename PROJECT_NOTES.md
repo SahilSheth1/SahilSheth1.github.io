@@ -88,21 +88,21 @@ A fast, sleek, "expensive-feeling" personal portfolio covering **software and de
 
 Do in order; don't start the next until "Done when" is met.
 
-| #   | Phase                                             | Branch                                         | Status                                                                           |
-| --- | ------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------- |
-| 0   | Setup and Git Foundations                         | `main`, `chore/setup`                          | **Done** (2026-10-28)                                                            |
-| 1   | Design Spec and Visual Foundation                 | `feature/design-system`                        | **Done** (2026-10-29)                                                            |
-| 2   | Layout Shell and Navigation                       | `feature/layout-shell`                         | **Done** (2026-10-31)                                                            |
-| 3   | Core Content (static)                             | `feature/core-content`                         | **Done** (2026-11-02)                                                            |
-| 4   | Motion Layer                                      | `feature/motion`                               | **Done** (2026-11-03)                                                            |
-| 5   | Skills Mixing Board                               | n/a                                            | **Dropped** (2026-11-04): skills stay a plain grouped list, no proficiency scale |
-| 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                      | **Done** (2026-11-07)                                                            |
-| 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                             | **In review** (built, awaiting merge)                                            |
-| 8   | Music Page                                        | `feature/music-page`, `-embeds`, `-visualizer` | Not started                                                                      |
-| 9   | Cursor-Reactive Background                        | `feature/background`                           | Not started                                                                      |
-| 10  | Hidden Terminal                                   | `feature/terminal`                             | Not started                                                                      |
-| 11  | Polish, Performance, Accessibility                | `chore/polish`                                 | Not started                                                                      |
-| 12  | Launch and Maintenance                            | `chore/launch`                                 | Not started                                                                      |
+| #   | Phase                                             | Branch                                                  | Status                                                                            |
+| --- | ------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 0   | Setup and Git Foundations                         | `main`, `chore/setup`                                   | **Done** (2026-10-28)                                                             |
+| 1   | Design Spec and Visual Foundation                 | `feature/design-system`                                 | **Done** (2026-10-29)                                                             |
+| 2   | Layout Shell and Navigation                       | `feature/layout-shell`                                  | **Done** (2026-10-31)                                                             |
+| 3   | Core Content (static)                             | `feature/core-content`                                  | **Done** (2026-11-02)                                                             |
+| 4   | Motion Layer                                      | `feature/motion`                                        | **Done** (2026-11-03)                                                             |
+| 5   | Skills Mixing Board                               | n/a                                                     | **Dropped** (2026-11-04): skills stay a plain grouped list, no proficiency scale  |
+| 6   | Career/Education DAW Timeline                     | `feature/career-timeline`                               | **Done** (2026-11-07)                                                             |
+| 7   | Hero Pad / Keyboard (+ nav dot pulses with audio) | `feature/hero-pad`                                      | **Done** (2026-11-07); real Logic Pro sounds to be added later in `public/audio/` |
+| 8   | Music Page                                        | `feature/music-page` (page, links, players, visualizer) | **In review** (built 2026-11-08, awaiting merge)                                  |
+| 9   | Cursor-Reactive Background                        | `feature/background`                                    | Not started                                                                       |
+| 10  | Hidden Terminal                                   | `feature/terminal`                                      | Not started                                                                       |
+| 11  | Polish, Performance, Accessibility                | `chore/polish`                                          | Not started                                                                       |
+| 12  | Launch and Maintenance                            | `chore/launch`                                          | Not started                                                                       |
 
 ### Phase 0 checklist (complete)
 
@@ -193,3 +193,7 @@ In-browser AI/ML demo (Transformers.js or Hugging Face Space), Formspree contact
 _Update the status table and decisions log as each phase completes._
 | 2026-11-05 | Phase 6 decisions: three lanes (Work, School, Music); music started May 2021; Allen HS Aug 2018 - Jun 2022; UT Austin from Aug 2026; TI split into intern (Jun - Aug 2026) and full-time (Sept 2026 - present), with bullets split by tense (to confirm). Release dates come from Apple Music at build time (public iTunes lookup, artist id in `site.js`), rebuilt daily by GitHub Actions. Dense catalogs merge into numbered markers. Plain list stays as the mobile / no-JS version. |
 | 2026-11-07 | Phase 6 live (Apple Music releases sync). Phase 7 decisions: 12 pads in the hero (4 chords, 2 808s, 2 vocal chops, 4 drums), 120 BPM, C major, a mix of drums and melody so any combination fits. Placeholder sounds are made in code; real Logic Pro exports go in `public/audio/` and get wired in `src/data/pad.js`. Sound is off by default; hitting a pad or the button turns it on; keys work only once sound is on. Nav dot pulses with the volume via `html[data-audio="playing"]` and `--audio-level`. |
+| 2026-11-08 | Phase 8 decisions: music links are Apple Music, Spotify, YouTube Music (in `src/data/music.js`). Story: violin, then GarageBand on phone (covid lockdown), iPad, Mac, then Logic Pro, then releasing. Featured track: Spotify does not expose Artist Pick, so the track link is pasted into `music.js`; until then the newest Apple Music release is featured. Visualizer will play the featured song from a self-hosted MP3 (streaming embeds cannot feed an audio analyser). Open question: Career music lane says "since May 2021" but the story starts in covid lockdown (2020). |
+| 2026-11-08 | Covid lockdown in Texas was 2021, so the Career music lane start (May 2021) stays. Featured track can be an Apple Music song link (`appleTrack`), a Spotify track link, or both; Apple needs no extra setup because the same public lookup supplies the title and cover. |
+| 2026-11-08 | Featured track is "Stay Cold" (Apple Music link set in `music.js`). Visualizer plays a 128 kbps MP3 of it hosted at `public/audio/stay-cold.mp3` (3.2 MB, converted from the 6.8 MB Logic bounce). `pulse.js` now drives the nav dot for both the pad and the track player. The full song is publicly downloadable from the site because it is hosted there. |
+| 2026-11-08 | Music page fixes: visualizer mute now uses a gain node (element mute was unreliable across browsers). Spotify and Apple Music players are tabs (one iframe loaded at a time); starting the track unloads the player, clicking into a player pauses the track. Apple tab has a release picker because Apple embeds show a single release. The featured section no longer has its own player. |

@@ -8,10 +8,10 @@
 // brand dot in the nav pulses with the volume (see Nav.astro).
 
 import { pads } from "../data/pad.js";
+import { pulse } from "./pulse.js";
 
 const SR = 44100;
 const MAX_VOICES = 32;
-const root = document.documentElement;
 const byId = new Map(pads.map((p) => [p.id, p]));
 const listeners = new Set();
 
@@ -30,7 +30,6 @@ const state = {
   ready: new Map(), // id -> AudioBuffer, once decoded
   voices: [], // { src, choke }
   playing: false,
-  level: 0,
   idleTimer: null,
 };
 
@@ -296,40 +295,12 @@ function setVolume(v) {
   emit();
 }
 
-// ---------- The brand dot pulses with the sound ----------
+// ---------- The brand dot pulses with the sound (see pulse.js) ----------
 
 function setPlaying(on) {
   if (on === state.playing) return;
   state.playing = on;
-  if (on) {
-    root.setAttribute("data-audio", "playing");
-    meter();
-  } else {
-    root.removeAttribute("data-audio");
-    document.querySelector(".brand")?.style.removeProperty("--audio-level");
-  }
-}
-
-function meter() {
-  const data = new Uint8Array(state.analyser.fftSize);
-  const tick = () => {
-    if (!state.playing) return;
-    state.analyser.getByteTimeDomainData(data);
-    let sum = 0;
-    for (let i = 0; i < data.length; i++) {
-      const x = (data[i] - 128) / 128;
-      sum += x * x;
-    }
-    state.level = Math.max(
-      Math.sqrt(sum / data.length) * 2.5,
-      state.level * 0.86,
-    );
-    document
-      .querySelector(".brand")
-      ?.style.setProperty("--audio-level", Math.min(1, state.level).toFixed(3));
-    requestAnimationFrame(tick);
-  };
-  tick();
+  pulse.set("pad", on ? state.analyser : null);
 }
 
 function voiceEnded(voice) {
@@ -390,11 +361,6 @@ function trigger(id) {
   if (ready) play(pad, ready);
   else loadPad(pad).then((buffer) => play(pad, buffer));
 }
-
-// The brand dot's state is lost when a page transition swaps in a new document
-document.addEventListener("astro:after-swap", () => {
-  if (state.playing) root.setAttribute("data-audio", "playing");
-});
 
 export const engine = {
   supported,
