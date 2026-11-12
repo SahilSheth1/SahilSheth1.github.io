@@ -1,34 +1,361 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import SectionStub from "../components/SectionStub.astro";
+import Section from "../components/Section.astro";
+import Visualizer from "../components/Visualizer.astro";
+import { getReleases } from "../data/releases.js";
+import { spotifyTrack } from "../data/spotify.js";
+import { appleTrack } from "../data/apple.js";
+import { byYear, dateLabel } from "../data/timeline-data.js";
+import {
+  musicLinks,
+  spotifyArtistId,
+  featured,
+  journey,
+} from "../data/music.js";
 
-const sections = [
-  { id: "journey", title: "Production journey" },
-  { id: "featured", title: "Featured track" },
-  { id: "listen", title: "Listen" },
-];
+const releases = await getReleases();
+const latest = releases[0];
+const first = releases[releases.length - 1];
+const applePick = featured.appleTrack
+  ? await appleTrack(featured.appleTrack)
+  : null;
+const spotifyPick = featured.spotifyTrack
+  ? await spotifyTrack(featured.spotifyTrack)
+  : null;
+const picked = applePick || spotifyPick;
+
+// The feature is the track chosen in music.js, or else the newest release
+const feature = picked
+  ? {
+      label: "Featured track",
+      title: picked.title,
+      art: picked.art,
+      meta: "",
+      links: [
+        applePick && { label: "Play on Apple Music", href: applePick.url },
+        spotifyPick && { label: "Play on Spotify", href: spotifyPick.url },
+      ].filter(Boolean),
+    }
+  : latest
+    ? {
+        label: "Latest release",
+        title: latest.title,
+        art: latest.art,
+        meta: `${latest.kind} / ${dateLabel(latest.date)}`,
+        links: latest.url
+          ? [{ label: "Play on Apple Music", href: latest.url }]
+          : [],
+      }
+    : null;
+
+// Apple's player can show any release, so the Listen section lets you pick one.
+// Singles get the small player.
+const embedUrl = (url) =>
+  url.replace("https://music.apple.com", "https://embed.music.apple.com");
+const appleYears = byYear(releases.filter((r) => r.url)).map((y) => ({
+  year: y.year,
+  list: y.list.map((r) => ({
+    label: `${r.title} (${r.kind})`,
+    src: embedUrl(r.url),
+    height: r.kind === "Single" ? 175 : 450,
+  })),
+}));
+const appleFirst = appleYears[0]?.list[0];
+
+const listen = [
+  { label: "Apple Music", href: musicLinks.appleMusic, primary: true },
+  { label: "Spotify", href: musicLinks.spotify },
+  { label: "YouTube Music", href: musicLinks.youtubeMusic },
+].filter((l) => l.href);
+
+const LATEST_SHOWN = 8;
+
+let n = 0;
+const num = () => String(++n).padStart(2, "0");
 ---
 
 <Layout
   title="Music"
-  description="Music by Sahil Sheth: production journey, featured track, and where to listen."
+  description="Music by Sahil Sheth: how I got into music, my latest release, and where to listen."
 >
   <section class="hero">
     <div class="container content">
       <p class="mono-label">Music production</p>
       <h1 class="display">Music</h1>
-      <p class="lede">Beats, mixes, and records made in Logic Pro.</p>
+      <p class="lede">
+        I started on violin and taught myself to make beats during lockdown.
+        Everything I put out, I produce, mix, and master myself.
+      </p>
+      <div class="actions">
+        {listen.map((l) => (
+          <a
+            class:list={["btn", l.primary ? "btn-primary" : "btn-secondary"]}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {l.label}
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
-  {sections.map((s, i) => (
-    <SectionStub
-      id={s.id}
-      index={String(i + 1).padStart(2, "0")}
-      title={s.title}
-      note="Content arrives in Phase 8."
-    />
-  ))}
+  <Section id="journey" index={num()} title="How I got here">
+    <ol class="journey">
+      {journey.map((step) => (
+        <li class="step">
+          <span class="dot" aria-hidden="true" />
+          <div class="step-body">
+            <h3>{step.title}</h3>
+            {step.when && <p class="mono-label">{step.when}</p>}
+            <p>{step.text}</p>
+          </div>
+        </li>
+      ))}
+      {first && (
+        <li class="step">
+          <span class="dot now" aria-hidden="true" />
+          <div class="step-body">
+            <h3>Releasing music</h3>
+            <p class="mono-label">First release / {dateLabel(first.date)}</p>
+            <p>
+              As the music got better, I started putting it out.
+              {releases.length > 1
+                ? ` ${releases.length} releases so far.`
+                : ""}
+            </p>
+          </div>
+        </li>
+      )}
+    </ol>
+  </Section>
+
+  {feature && (
+    <Section id="featured" index={num()} title={feature.label}>
+      <div class="feature">
+        {feature.art && (
+          <img
+            class="art"
+            src={feature.art}
+            alt={feature.title ? `Cover art for ${feature.title}` : "Cover art"}
+            width="320"
+            height="320"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <div class="feature-info">
+          {feature.meta && <p class="mono-label">{feature.meta}</p>}
+          {feature.title && <h3 class="feature-title">{feature.title}</h3>}
+          {feature.links.length > 0 && (
+            <div class="actions">
+              {feature.links.map((l) => (
+                <a
+                  class="btn btn-primary"
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </Section>
+  )}
+
+  {featured.audio && (
+    <Section id="visualizer" index={num()} title="Play it here">
+      <Visualizer
+        src={featured.audio}
+        title={picked?.title || featured.audioTitle}
+        artist="Sahil Sheth"
+        cover={picked?.art || ""}
+      />
+    </Section>
+  )}
+
+  <Section id="listen" index={num()} title="Listen">
+    <div class="listen" data-listen>
+      <div class="tabs" role="tablist" aria-label="Streaming service">
+        <button
+          class="tab"
+          type="button"
+          role="tab"
+          id="tab-spotify"
+          aria-controls="panel-spotify"
+          aria-selected="true"
+          data-tab="spotify"
+        >
+          Spotify
+        </button>
+        {appleFirst && (
+          <button
+            class="tab"
+            type="button"
+            role="tab"
+            id="tab-apple"
+            aria-controls="panel-apple"
+            aria-selected="false"
+            tabindex="-1"
+            data-tab="apple"
+          >
+            Apple Music
+          </button>
+        )}
+      </div>
+
+      <div
+        class="panel"
+        role="tabpanel"
+        id="panel-spotify"
+        aria-labelledby="tab-spotify"
+        data-panel="spotify"
+      >
+        <iframe
+          class="player"
+          title="Spotify player for Sahil Sheth"
+          src={`https://open.spotify.com/embed/artist/${spotifyArtistId}?utm_source=generator&theme=0`}
+          width="100%"
+          height="352"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        ></iframe>
+        <p class="note" data-note hidden>
+          Stopped so it doesn't play over the track above.
+          <button class="link" type="button" data-reload>
+            Load the player again
+          </button>
+        </p>
+      </div>
+
+      {appleFirst && (
+        <div
+          class="panel"
+          role="tabpanel"
+          id="panel-apple"
+          aria-labelledby="tab-apple"
+          data-panel="apple"
+        >
+          <label class="pick">
+            <span class="mono-label">Release</span>
+            <select data-release>
+              {appleYears.map((y) => (
+                <optgroup label={y.year}>
+                  {y.list.map((r) => (
+                    <option value={r.src} data-height={r.height}>
+                      {r.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+          <iframe
+            class="player"
+            title="Apple Music player"
+            src={appleFirst.src}
+            width="100%"
+            height={appleFirst.height}
+            loading="lazy"
+            allow="autoplay *; encrypted-media *; clipboard-write"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+          ></iframe>
+          <p class="note" data-note hidden>
+            Stopped so it doesn't play over the track above.
+            <button class="link" type="button" data-reload>
+              Load the player again
+            </button>
+          </p>
+        </div>
+      )}
+    </div>
+  </Section>
+
+  {releases.length > 0 && (
+    <Section id="releases" index={num()} title="All releases">
+      <ul class="releases">
+        {releases.slice(0, LATEST_SHOWN).map((r) => (
+          <li>
+            {r.art ? (
+              <img
+                src={r.art}
+                alt=""
+                width="56"
+                height="56"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="thumb" aria-hidden="true" />
+            )}
+            <span class="rel-text">
+              {r.url ? (
+                <a href={r.url} target="_blank" rel="noopener noreferrer">
+                  {r.title}
+                </a>
+              ) : (
+                <span>{r.title}</span>
+              )}
+              <span class="rel-meta">
+                {r.kind} / {dateLabel(r.date)}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {releases.length > LATEST_SHOWN && (
+        <details class="older">
+          <summary>Older releases ({releases.length - LATEST_SHOWN})</summary>
+          {byYear(releases.slice(LATEST_SHOWN)).map((y) => (
+            <details class="year">
+              <summary>
+                {y.year} ({y.list.length})
+              </summary>
+              <ul class="releases">
+                {y.list.map((r) => (
+                  <li>
+                    {r.art ? (
+                      <img
+                        src={r.art}
+                        alt=""
+                        width="56"
+                        height="56"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span class="thumb" aria-hidden="true" />
+                    )}
+                    <span class="rel-text">
+                      {r.url ? (
+                        <a
+                          href={r.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {r.title}
+                        </a>
+                      ) : (
+                        <span>{r.title}</span>
+                      )}
+                      <span class="rel-meta">
+                        {r.kind} / {dateLabel(r.date)}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </details>
+      )}
+    </Section>
+  )}
 </Layout>
 
 <style>
@@ -53,5 +380,268 @@ const sections = [
     max-width: 44ch;
     font-size: clamp(1.125rem, 2vw, 1.375rem);
     line-height: 1.5;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+
+  .actions .btn {
+    background-image: none;
+  }
+
+  /* ---- Journey ---- */
+  .journey {
+    position: relative;
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .journey::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 5px;
+    width: 1px;
+    background: var(--border-strong);
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11px minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .dot {
+    z-index: 1;
+    width: 11px;
+    height: 11px;
+    margin-top: 0.4rem;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+  }
+
+  .dot.now {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: var(--glow-accent);
+  }
+
+  .step-body {
+    display: grid;
+    gap: var(--space-1);
+    max-width: var(--measure);
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---- Feature ---- */
+  .feature {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  .art {
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .feature-info {
+    display: grid;
+    gap: var(--space-2);
+    align-content: center;
+  }
+
+  .feature-title {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-heading);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  @media (min-width: 40rem) {
+    .feature {
+      grid-template-columns: 20rem minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  /* ---- Players ---- */
+  .listen {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 40rem;
+  }
+
+  /* Tabs show only when the script is running; without it both players are listed */
+  .tabs {
+    display: none;
+    gap: var(--space-2);
+  }
+
+  .listen[data-ready] .tabs {
+    display: flex;
+  }
+
+  .tab {
+    min-height: var(--tap-target);
+    padding: 0 var(--space-5);
+    color: var(--text-muted);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .tab:hover {
+    color: var(--text);
+  }
+
+  .tab[aria-selected="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .listen:not([data-ready]) .panel + .panel {
+    margin-top: var(--space-4);
+  }
+
+  .pick {
+    display: grid;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  select {
+    width: 100%;
+    min-height: var(--tap-target);
+    padding: 0 var(--space-4);
+    color: var(--text);
+    font: inherit;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+  }
+
+  .player {
+    display: block;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+  }
+
+  .note {
+    padding: var(--space-5);
+    color: var(--text-muted);
+    background: var(--surface-1);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+  }
+
+  .link {
+    display: inline;
+    padding: 0;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ---- Releases ---- */
+  .releases {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .releases {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .releases li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .releases img,
+  .thumb {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    background: var(--surface-3);
+    border-radius: var(--radius-sm);
+  }
+
+  .rel-text {
+    display: grid;
+    min-width: 0;
+  }
+
+  .rel-meta {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--tracking-mono);
+  }
+
+  .older {
+    margin-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap-target);
+    padding-block: var(--space-3);
+    color: var(--text);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .year > summary {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+  }
+
+  .year .releases {
+    margin-bottom: var(--space-4);
   }
 </style>

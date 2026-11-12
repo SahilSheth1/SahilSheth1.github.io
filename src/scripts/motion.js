@@ -26,6 +26,7 @@ const REVEAL = [
   ".resume", // Resume
   ".stack > p, .cards > li", // Contact
   ".stub .container > *", // placeholder sections
+  ".journey > .step, .feature, .listen, .releases > li, .older, .viz", // Music page
 ].join(",");
 
 let lenis = null;
