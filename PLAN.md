@@ -326,7 +326,7 @@ Each phase ends with something working and merged. Do them in order, and don't s
 | 5. Skills Mixing Board                 | Skipped     |
 | 6. Career and Education DAW Timeline   | Done        |
 | 7. Hero Pad / Keyboard                 | Done        |
-| 8. Music Page                          | Not started |
+| 8. Music Page                          | Done        |
 | 9. Cursor-Reactive Background          | Not started |
 | 10. Hidden Terminal                    | Not started |
 | 11. Polish, Performance, Accessibility | Not started |
