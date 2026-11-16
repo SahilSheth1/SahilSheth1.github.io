@@ -8,6 +8,7 @@ import "../styles/base.css";
 import "../styles/motion.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import Terminal from "../components/Terminal.astro";
 import { site } from "../data/site.js";
 
 const { title, description = site.description } = Astro.props;
@@ -64,6 +65,7 @@ const ogImage = new URL("/og.png", Astro.site);
       <slot />
     </main>
     <Footer />
+    <Terminal />
     <script>
       import "../scripts/motion.js";
       import "../scripts/timeline.js";
@@ -71,6 +73,7 @@ const ogImage = new URL("/og.png", Astro.site);
       import "../scripts/viz.js";
       import "../scripts/players.js";
       import "../scripts/background.js";
+      import "../scripts/terminal.js";
     </script>
   </body>
 </html>

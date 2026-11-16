@@ -1,0 +1,189 @@
+---
+// The hidden terminal. Opens with ` (backtick), Ctrl+K or Cmd+K, or the
+// ">_" button in the footer. The logic lives in scripts/terminal.js.
+---
+
+<dialog class="terminal" data-terminal aria-label="Terminal" transition:persist>
+  <div class="bar">
+    <span class="mono-label">terminal</span>
+    <button
+      type="button"
+      class="close"
+      data-terminal-close
+      aria-label="Close terminal"
+    >
+      Esc
+    </button>
+  </div>
+  <div class="screen" data-terminal-screen>
+    <div class="log" data-terminal-log role="log" aria-live="polite"></div>
+    <form class="line" data-terminal-form autocomplete="off">
+      <label for="terminal-input" class="prompt" aria-hidden="true">
+        guest@sahil ~ $
+      </label>
+      <input
+        id="terminal-input"
+        data-terminal-input
+        type="text"
+        aria-label="Type a command"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        enterkeyhint="go"
+      />
+    </form>
+  </div>
+</dialog>
+
+<style is:global>
+  .terminal {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: min(46rem, 100%);
+    max-width: 100%;
+    height: min(32rem, 78dvh);
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    color: var(--text);
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    border-bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow-lg), var(--glow-accent);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    line-height: 1.6;
+    overflow: hidden;
+  }
+
+  .terminal:not([open]) {
+    display: none;
+  }
+
+  .terminal::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .terminal[open] {
+    animation: terminal-in var(--dur-base) var(--ease-out);
+  }
+
+  @keyframes terminal-in {
+    from {
+      transform: translateY(1.5rem);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal[open] {
+      animation: none;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .terminal {
+      inset: auto 0 var(--space-6) 0;
+      border-bottom: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+    }
+  }
+
+  .terminal .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .terminal .close {
+    min-height: 2rem;
+    padding: 0 var(--space-3);
+    font: inherit;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .terminal .close:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .terminal .screen {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--space-4);
+    overscroll-behavior: contain;
+  }
+
+  .terminal .log > div {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .terminal .log .cmd {
+    color: var(--text-muted);
+  }
+
+  .terminal .log .cmd b {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .terminal .log .muted {
+    color: var(--text-subtle);
+  }
+
+  .terminal .log .err {
+    color: var(--danger);
+  }
+
+  .terminal .log .head {
+    color: var(--secondary);
+  }
+
+  .terminal .log a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .terminal .line {
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .terminal .prompt {
+    flex: none;
+    color: var(--accent);
+  }
+
+  .terminal input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--text);
+    background: transparent;
+    border: 0;
+    outline: none;
+    caret-color: var(--accent);
+  }
+
+  @media (max-width: 47.99rem) {
+    /* 16px stops iOS Safari from zooming in when the field is focused */
+    .terminal input {
+      font-size: 16px;
+    }
+  }
+</style>
