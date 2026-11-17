@@ -38,7 +38,7 @@ export const journey = [
   {
     title: "GarageBand on my phone",
     when: "",
-    text: "During covid lockdown I started making beats on my phone.",
+    text: "During COVID lockdown I started making beats on my phone.",
   },
   {
     title: "GarageBand on iPad",

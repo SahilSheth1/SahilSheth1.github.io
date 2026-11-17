@@ -140,11 +140,11 @@ const SHOWN = 6; // releases listed before "Show all"
 
                 {c.marker ? (
                   <>
-                    <h4>
+                    <h3 class="detail-title">
                       {c.count === 1
                         ? c.releases[0].kind
                         : `${c.count} releases`}
-                    </h4>
+                    </h3>
                     <ul
                       class="rel-list"
                       tabindex={c.count > SHOWN ? 0 : undefined}
@@ -196,7 +196,7 @@ const SHOWN = 6; // releases listed before "Show all"
                   </>
                 ) : (
                   <>
-                    <h4>{i.title || i.degree}</h4>
+                    <h3 class="detail-title">{i.title || i.degree}</h3>
                     <p class="org">{i.org || i.school}</p>
                     {i.summary && <p class="summary">{i.summary}</p>}
                     {i.bullets && i.bullets.length > 0 && (
@@ -797,7 +797,8 @@ const SHOWN = 6; // releases listed before "Show all"
     align-content: start;
   }
 
-  h4 {
+  h4,
+  .detail-title {
     font-size: 1.25rem;
     line-height: 1.3;
     letter-spacing: -0.01em;

@@ -21,7 +21,7 @@ import { pads, padMeta } from "../data/pad.js";
         type="button"
         data-pad-id={p.id}
         data-key={p.key}
-        aria-label={p.name}
+        aria-label={`${p.label}, ${p.name}, key ${p.key.toUpperCase()}`}
         aria-keyshortcuts={p.key.toUpperCase()}
       >
         <span class="flash" aria-hidden="true"></span>
